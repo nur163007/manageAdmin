@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller
 {
@@ -24,8 +27,24 @@ class UserController extends Controller
 //    }
     public function loginCheck(Request $request){
 
-        $email = strtolower($request->email);
-        if ($user = User::where('email',$email)->first()) {
+        $validator = Validator::make($request->all(),[
+            'username' => 'required|string',
+            'password' => 'required|string|min:6|',
+        ]);
+        if ($validator->fails()){
+            return response()->json($validator->errors());
+        }
+
+//        if (!$token = Auth::attempt($validator->validated())){
+//            return response()->json([
+//                'success'=>false,
+//                'msg' =>'Username or Password is Incorrect',
+//            ]);
+//        }
+//        return $this->respondWithToken($token);
+
+        $username = strtolower($request->username);
+        if ($user = User::where('username',$username)->first()) {
             // dd("ok");
 //            $passInfo = PasswordChange::where('customer_id',$customer->id)->first();
 //            $confirm = isset($passInfo) ? $passInfo->confirmation : '';
@@ -35,7 +54,7 @@ class UserController extends Controller
                 $logged_in_data = session([
                     'user_name' => $user->first_name,
                     'user_id' => $user->id,
-                    'email'=> $email,
+                    'username'=> $username,
                     'role'=> $user->role,
                     'user_status'=> $user->emailverified,
                     'phone'=> $user->mobile,
@@ -62,4 +81,12 @@ class UserController extends Controller
 
         }
     }
+//    protected function respondWithToken($token){
+//        return response()->json([
+//            'success' => true,
+//            'access_token'=>$token,
+//            'token_type'=>'Bearer',
+//            'expires_in'=>auth()->factory()->getTTL()*60
+//        ]);
+//    }
 }

@@ -15,3 +15,7 @@ use App\Http\Controllers\RegistrationController;
 */
 
 //Route::get('/registration-form',[RegistrationController::class, 'showRegisterFrom']);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

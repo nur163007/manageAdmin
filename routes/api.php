@@ -17,23 +17,21 @@ use App\Http\Controllers\RegistrationController;
 |
 */
 
-Route::get('/',function(){
- return view('admin.dashboard');
-});
+
 Route::get('/', [UserController::class,'login']);
-Route::post('/loginCheck', [UserController::class,'loginCheck'])->name('loginCheck');
+//Route::post('/loginCheck', [UserController::class,'loginCheck'])->name('loginCheck');
 Route::get('/registration-form',[RegistrationController::class, 'showRegisterFrom']);
 Route::get('/countries',[CountryController::class,'getCountry'])->name('country');
 Route::get('/terms',[UserController::class,'getTerms']);
 Route::post('/member/register',[UserController::class,'store'])->name('store.register');
 
-//Route::middleware('login')->group(function(){
-//
-//});
 
 Route::group(['middileware' =>'api'],function ($routes){
     Route::post('/register',[RegistrationController::class,'register']);
     Route::get('/verify',[RegistrationController::class,'verifyEmail']);
-
+    Route::post('/logincheck',[UserController::class,'loginCheck'])->name('logincheck');
+    Route::get('/dashboard',function(){
+        return view('admin.dashboard');
+    });
 });
 
