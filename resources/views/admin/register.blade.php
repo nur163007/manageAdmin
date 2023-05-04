@@ -80,7 +80,7 @@
                                 <input type="submit" name="submit" value="Register" id="submit" class="login100-form-btn btn-primary">
                             </div>
                             <div class="text-center pt-3">
-                                <p class="text-dark mb-0">Already have account?<a href="{{url('/api')}}" class="text-primary ml-1">Sign In</a></p>
+                                <p class="text-dark mb-0">Already have account?<a href="{{url('api/login')}}" class="text-primary ml-1">Sign In</a></p>
                             </div>
                         </form>
                     </div>

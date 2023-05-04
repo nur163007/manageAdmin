@@ -6,6 +6,7 @@
 
 <!-- BOOTSTRAP JS -->
 <script src="{{ URL::asset('assets/plugins/bootstrap/js/popper.min.js') }}"></script>
+
 <script src="{{ URL::asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
 
 <!-- SPARKLINE JS-->
@@ -22,6 +23,7 @@
 <script src="{{ URL::asset('assets/plugins/input-mask/jquery.mask.min.js') }}"></script>
 
 <!-- SIDE-MENU JS-->
+{{--<script src="{{ URL::asset('assets/plugins/sidemenu/left_sidemenu.js') }}"></script>--}}
 <script src="{{ URL::asset('assets/plugins/sidemenu/sidemenu.js') }}"></script>
 
 <!-- SIDEBAR JS -->
@@ -33,6 +35,10 @@
 
 <!-- sweetalert 2 -->
 <script src="{{asset('assets/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+
+<!-- DataTables -->
+<script src="{{ asset('assets/plugins/datatable/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/datatable/dataTables.bootstrap4.min.js') }}"></script>
 
 @yield('js')
 

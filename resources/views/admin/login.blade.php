@@ -102,7 +102,8 @@
                 success:function(response){
 
                     if (response.msg){
-                        $("#loginForm")[0].reset();
+                        window.location.assign("http://127.0.0.1:8000/api/dashboard");
+                        // $("#loginForm")[0].reset();
                         $(".error").text("");
                         Toast.fire({
                             type:'success',
@@ -110,6 +111,10 @@
                         });
                     }else {
                         printErrorMsg(response);
+                        Toast.fire({
+                            type:'error',
+                            title:response.error,
+                        });
                     }
                 },
                 error:function(error){

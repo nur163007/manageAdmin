@@ -12,12 +12,12 @@ class Registration extends Model implements JWTSubject
 
     public function getJWTIdentifier()
     {
-        // TODO: Implement getJWTIdentifier() method.
+        return $this->getKey();
     }
 
     public function getJWTCustomClaims()
     {
-        // TODO: Implement getJWTCustomClaims() method.
+        return [];
     }
 
     protected $fillable = [

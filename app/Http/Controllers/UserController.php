@@ -2,16 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\Contracts\Activity;
 
 
 class UserController extends Controller
 {
+//    public function __construct()
+//    {
+//        $this->middleware('auth:api',[
+//            'except'=>[
+//                'loginCheck',
+//                'register'
+//            ]
+//        ]);
+//    }
+
     public function login(){
         return view('admin.login');
     }
@@ -35,21 +49,45 @@ class UserController extends Controller
             return response()->json($validator->errors());
         }
 
-//        if (!$token = Auth::attempt($validator->validated())){
-//            return response()->json([
-//                'success'=>false,
-//                'msg' =>'Username or Password is Incorrect',
-//            ]);
-//        }
+/*        if (Auth::attempt(['username' => $request['username'], 'password' => $request['password'], 'emailverified' => 1])) {
+            $company = DB::table('users as u')
+                ->select('u.*')
+                ->where('u.username', $request['username'])
+                ->first();
+
+            if ($company->emailverified == 0 && !is_null($company->emailverified)) {
+                return response()->json(array('message' => 'Your company is not active.'), 401);
+            }
+            //$request->session()->regenerate();
+
+
+            $token = $request->user()->createToken('access_token');
+
+            return response()->json([
+                'status' => true,
+                'access_token' => $token->plainTextToken,
+                'user_id' => encryptId(auth()->user()->id),
+                'role' => auth()->user()->role,
+                'token_type' => 'Bearer',
+            ]);
+
+        }
+
+*/
+//      exit();
 //        return $this->respondWithToken($token);
 
         $username = strtolower($request->username);
+        $password = $request->password;
+
         if ($user = User::where('username',$username)->first()) {
             // dd("ok");
 //            $passInfo = PasswordChange::where('customer_id',$customer->id)->first();
 //            $confirm = isset($passInfo) ? $passInfo->confirmation : '';
-            if(Hash::check($request->password, $user->password)) {
-                // dd("ok");
+            $loginpassword = Crypt::decrypt($user->password);
+
+            if($loginpassword == $password) {
+//                 dd($password);
                 // dd($user->full_name);
                 $logged_in_data = session([
                     'user_name' => $user->first_name,
@@ -64,20 +102,29 @@ class UserController extends Controller
                 // return view('home.dashboard');
                 if($user->role == 3){
                     if($user->emailverified == 1){
-                        return redirect('api/dashboard');
+                        return response()->json([
+                            'msg' =>'Successfully Logged in',
+                            'user'=>$user,
+                        ]);
                     }
                     else{
-                        return redirect('/api')->with('error','Your account is not active, Please contact with manager.');
+                        return response()->json([
+                            'error' => 'Your account is not active, Please contact with Admin.',
+                        ]);
                     }
                 }
             }
 
             else {
-                return back()->with('error','Wrong Password');
+                return response()->json([
+                    'error' => 'Wrong Password',
+                ]);
             }
         }
         else {
-            return back()->with('error','Please give the valid email');
+            return response()->json([
+                'error' => 'Please give the valid email',
+            ]);
 
         }
     }
@@ -89,4 +136,17 @@ class UserController extends Controller
 //            'expires_in'=>auth()->factory()->getTTL()*60
 //        ]);
 //    }
+
+   public function userCreate(){
+        return view('admin.user.index');
+   }
+
+//   get all role
+   public function userIndex(){
+        $role = Role::all();
+
+       return response()->json([
+           'userRole'=>$role,
+       ]);
+   }
 }

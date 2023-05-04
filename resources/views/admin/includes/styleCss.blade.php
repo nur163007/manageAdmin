@@ -1,4 +1,5 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="app-url" content="{{ url('/api') }}">
 <!-- FAVICON -->
 <link rel="shortcut icon" type="image/x-icon" href="{{URL::asset('assets/images/brand/favicon.ico')}}" />
 
@@ -24,6 +25,9 @@
 
 <!-- sweetalert 2 -->
 <link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.css') }}">
+
+<!-- DataTables -->
+<link rel="stylesheet" href="{{ asset('assets/plugins/datatable/dataTables.bootstrap4.min.css') }}">
 
 @yield('css')
 

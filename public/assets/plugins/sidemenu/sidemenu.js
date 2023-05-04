@@ -11,13 +11,13 @@
 
 
 	$(window).on('load resize',function(){
-        if($(window).width() < 739){
+        if($(window).width() < 768){
             $('.side-menu').hover(function(event) {
 				event.preventDefault();
 				$('.app').addClass('sidenav-toggled');
 			});
 		}
-		if($(window).width() > 739){
+		if($(window).width() > 768){
 			$('.side-menu').hover(function(event) {
 				event.preventDefault();
 				$('.app').removeClass('sidenav-toggled');

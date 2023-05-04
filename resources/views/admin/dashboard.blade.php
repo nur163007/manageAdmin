@@ -361,10 +361,7 @@
         </div><!-- COL END -->
     </div>
     <!-- ROW-3 CLOSED -->
-    </div>
-    </div>
-    <!-- CONTAINER CLOSED -->
-    </div>
+
 @endsection
 @section('js')
     <script src="{{ URL::asset('assets/js/index3.js') }}"></script>
