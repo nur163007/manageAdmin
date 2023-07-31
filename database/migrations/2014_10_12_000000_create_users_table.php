@@ -35,6 +35,7 @@ class CreateUsersTable extends Migration
             $table->string('state')->nullable();
             $table->string('country');
             $table->rememberToken();
+            $table->integer('expired_in');
             $table->timestamps();
         });
     }

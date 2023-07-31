@@ -7,7 +7,7 @@
 <title>@yield('title')</title>
 
 <!-- BOOTSTRAP CSS -->
-<link href="{{URL::asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" />
+<link href="{{URL::asset('assets/plugins/bootstrap/css/bootstrap.css')}}" rel="stylesheet" />
 
 <!-- STYLE CSS -->
 <link href="{{URL::asset('assets/css/style.css')}}" rel="stylesheet"/>
@@ -27,7 +27,8 @@
 <link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.css') }}">
 
 <!-- DataTables -->
-<link rel="stylesheet" href="{{ asset('assets/plugins/datatable/dataTables.bootstrap4.min.css') }}">
+{{--<link rel="stylesheet" href="{{ asset('assets/plugins/datatable/dataTables.bootstrap4.min.css') }}">--}}
+<link rel="stylesheet" href="{{ asset('assets/plugins/datatable/dataTables.min.css') }}">
 
 @yield('css')
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Module;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -16,137 +17,170 @@ use Spatie\Activitylog\Contracts\Activity;
 
 class UserController extends Controller
 {
-//    public function __construct()
-//    {
-//        $this->middleware('auth:api',[
-//            'except'=>[
-//                'loginCheck',
-//                'register'
-//            ]
-//        ]);
-//    }
-
-    public function login(){
-        return view('admin.login');
-    }
-
-    public function register(){
-        return view('admin.register');
-    }
-    public function getTerms(){
-        return view('admin.terms');
-    }
-//    public function store(Request $request){
-//        dd($request->all());
-//    }
-    public function loginCheck(Request $request){
-
-        $validator = Validator::make($request->all(),[
-            'username' => 'required|string',
-            'password' => 'required|string|min:6|',
-        ]);
-        if ($validator->fails()){
-            return response()->json($validator->errors());
-        }
-
-/*        if (Auth::attempt(['username' => $request['username'], 'password' => $request['password'], 'emailverified' => 1])) {
-            $company = DB::table('users as u')
-                ->select('u.*')
-                ->where('u.username', $request['username'])
-                ->first();
-
-            if ($company->emailverified == 0 && !is_null($company->emailverified)) {
-                return response()->json(array('message' => 'Your company is not active.'), 401);
-            }
-            //$request->session()->regenerate();
-
-
-            $token = $request->user()->createToken('access_token');
-
-            return response()->json([
-                'status' => true,
-                'access_token' => $token->plainTextToken,
-                'user_id' => encryptId(auth()->user()->id),
-                'role' => auth()->user()->role,
-                'token_type' => 'Bearer',
-            ]);
-
-        }
-
-*/
-//      exit();
-//        return $this->respondWithToken($token);
-
-        $username = strtolower($request->username);
-        $password = $request->password;
-
-        if ($user = User::where('username',$username)->first()) {
-            // dd("ok");
-//            $passInfo = PasswordChange::where('customer_id',$customer->id)->first();
-//            $confirm = isset($passInfo) ? $passInfo->confirmation : '';
-            $loginpassword = Crypt::decrypt($user->password);
-
-            if($loginpassword == $password) {
-//                 dd($password);
-                // dd($user->full_name);
-                $logged_in_data = session([
-                    'user_name' => $user->first_name,
-                    'user_id' => $user->id,
-                    'username'=> $username,
-                    'role'=> $user->role,
-                    'user_status'=> $user->emailverified,
-                    'phone'=> $user->mobile,
-                    'address'=> $user->state,
-
-                ]);
-                // return view('home.dashboard');
-                if($user->role == 3){
-                    if($user->emailverified == 1){
-                        return response()->json([
-                            'msg' =>'Successfully Logged in',
-                            'user'=>$user,
-                        ]);
-                    }
-                    else{
-                        return response()->json([
-                            'error' => 'Your account is not active, Please contact with Admin.',
-                        ]);
-                    }
-                }
-            }
-
-            else {
-                return response()->json([
-                    'error' => 'Wrong Password',
-                ]);
-            }
-        }
-        else {
-            return response()->json([
-                'error' => 'Please give the valid email',
-            ]);
-
-        }
-    }
-//    protected function respondWithToken($token){
-//        return response()->json([
-//            'success' => true,
-//            'access_token'=>$token,
-//            'token_type'=>'Bearer',
-//            'expires_in'=>auth()->factory()->getTTL()*60
-//        ]);
-//    }
-
-   public function userCreate(){
+    public function userIndex(){
         return view('admin.user.index');
-   }
+    }
 
-//   get all role
-   public function userIndex(){
-        $role = Role::all();
+    public function userData(){
+        $user= DB::table('users as u')
+            ->join('roles as r','u.role','=','r.id')
+            ->select('u.*','r.name as rolename')->get();
+        return response()->json(['data'=>$user],200);
+    }
+    public function getRole(){
+        $role = Role::where('id','!=',1)->get();
+        return response()->json($role,200);
+    }
 
-       return response()->json([
-           'userRole'=>$role,
+   public function userStore(Request $request)
+   {
+
+       $userId = $request->hiddenUserId;
+
+       if ($userId == 0) {
+       $user = User::create([
+           'username' => $request->email,
+           'firstname' => $request->firstname,
+           'lastname' => $request->lastname,
+           'email' => $request->email,
+           'mobile' => $request->mobile,
+           'role' => $request->role,
+           'dob' => $request->dob,
+           'company' => $request->company,
+           'department' => $request->department,
+           'designation' => $request->designation,
+           'nid' => $request->nid,
+           'passport' => $request->passport,
+           'password' => bcrypt($request->password),
+           'emailverified' => 1,
+           'address1' => $request->address1,
+           'address2' => $request->address2,
+           'state' => $request->state,
+           'country' => $request->country,
        ]);
+           $password = $request->password;
+           if ($user != null){
+               MailController::sendVerifyEmail($user->firstname,$user->email,$password);
+               return response()->json([
+                   'msg'=>'Account is active now,Username and password sent to the verified email.',
+                   'success' =>true
+               ],200);
+           }
+   }else{
+        $user = User::findOrFail($userId);
+        if ($user->username != $request->email){
+            $user->username = $request->email;
+            $user->email = $request->email;
+        }
+        if ($request->password != ''){
+           $user->password = bcrypt($request->password);
+        }
+         $user->firstname = $request->firstname;
+         $user->lastname = $request->lastname;
+         $user->mobile = $request->mobile;
+         $user->role = $request->role;
+         $user->dob =  $request->dob;
+         $user->company = $request->company;
+         $user->department = $request->department;
+         $user->designation = $request->designation;
+         $user->nid = $request->nid;
+         $user->passport = $request->passport;
+         $user->address1 = $request->address1;
+         $user->address2 = $request->address2;
+         $user->state = $request->state;
+         $user->country = $request->country;
+         $user->update();
+       }
+
+       if ($request->password == ''){
+           return response()->json([
+               'msg'=>'Account is updated now.',
+               'success' =>true
+           ],200);
+       }else {
+           $password = $request->password;
+           if ($user != null) {
+               MailController::sendVerifyEmail($user->firstname, $user->email, $password);
+               return response()->json([
+                   'msg' => 'Account is updated now,Username and password sent to the verified email.',
+                   'success' => true
+               ], 200);
+           }
+       }
+
    }
+
+   public function editUser($id){
+       $user = User::findOrFail($id);
+       return response()->json(['user'=>$user],200);
+   }
+
+   public function deleteUser($id){
+       $user = User::findOrFail($id);
+       $user->delete();
+       return response()->json([
+           'msg'=>'User deleted',
+           'success'=>true
+       ],200);
+   }
+
+    public function roleIndex(){
+        return view('admin.user.roles');
+    }
+
+    public function roleData(){
+        $role = Role::all();
+        return response()->json(['data'=>$role],200);
+    }
+
+    public function roleStore(Request $request)
+    {
+        $roleId = $request->hiddenRoleId;
+
+        if ($roleId == 0) {
+            $role = Role::create([
+                'name' => $request->name,
+                'description' => $request->description,
+            ]);
+            if ($role != null){
+                return response()->json([
+                    'msg'=>'Role data store successfully.',
+                    'success' =>true
+                ],200);
+            }
+        }else{
+            $role = Role::findOrFail($roleId);
+            $role->name = $request->name;
+            $role->description = $request->description;
+            $role->update();
+
+            if ($role != null) {
+                return response()->json([
+                    'msg' => 'Role data updated successfully',
+                    'success' => true
+                ], 200);
+            }
+        }
+    }
+    public function editRole($id){
+        $role = Role::findOrFail($id);
+        return response()->json($role,200);
+    }
+
+    public function deleteRole($id){
+        $role = Role::findOrFail($id);
+        $role->delete();
+        return response()->json([
+            'msg'=>'Role deleted',
+            'success'=>true
+        ],200);
+    }
+
+    public function getProfile(){
+        return view('admin.user.profile');
+    }
+
+    public function getEditProfile(){
+        return view('admin.user.edit-profile');
+    }
 }

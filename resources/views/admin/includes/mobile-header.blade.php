@@ -15,7 +15,7 @@
                                 <div class="dropdown profile-1">
                                     <a href="#" data-toggle="dropdown" class="nav-link pr-2 leading-none d-flex">
                                         <span>
-                                            <img src="{{URL::asset('assets/images/users/10.jpg')}}" alt="profile-user" class="avatar  profile-user brround cover-image">
+                                            <img src="{{URL::asset('assets/images/users/Nur.jpeg')}}" alt="profile-user" class="avatar  profile-user brround cover-image">
                                         </span>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
@@ -43,9 +43,14 @@
                                         <a class="dropdown-item" href="#">
                                             <i class="dropdown-icon mdi mdi-compass-outline"></i> Need help?
                                         </a>
-                                        <a class="dropdown-item" href="{{ url('/' . $page='login') }}">
-                                            <i class="dropdown-icon mdi  mdi-logout-variant"></i> Sign out
-                                        </a>
+                                        <form id="logout-mobile">
+                                            <a class="dropdown-item" href="#">
+                                                <i class="dropdown-icon mdi  mdi-logout-variant"></i>
+                                                @csrf
+                                                <input type="hidden" name="token" id="hiddenMobileToken">
+                                                <input type="submit" name="submit" value="Signout" class="bg-transparent border-0 w-100 text-left">
+                                            </a>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="dropdown d-md-flex header-settings">

@@ -35,21 +35,21 @@
 									Registration
 								</span>
                             <div class="wrap-input100 validate-input" data-validate = "Valid first name is required: md x">
-                                <input class="input100" type="text" name="firstname" placeholder="First name">
+                                <input class="input100" type="text" name="firstname" id="firstname" placeholder="First name">
                                 <span class="error firstnameerr"></span>
                                 <span class="symbol-input100">
 										<i class="fa fa-user-plus" aria-hidden="true"></i>
 									</span>
                             </div>
                             <div class="wrap-input100 validate-input" data-validate = "Valid last name is required: ahmed">
-                                <input class="input100" type="text" name="lastname" placeholder="Last name">
+                                <input class="input100" type="text" name="lastname" id="lastname" placeholder="Last name">
                                 <span class="error"></span>
                                 <span class="symbol-input100">
 										<i class="fa fa-user-plus" aria-hidden="true"></i>
 									</span>
                             </div>
                             <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-                                <input class="input100" type="text" name="email" placeholder="Email">
+                                <input class="input100" type="text" name="email" id="email" placeholder="Email">
                                 <span class="error emailerr"></span>
                                 <span class="symbol-input100">
 										<i class="zmdi zmdi-email" aria-hidden="true"></i>
@@ -57,14 +57,14 @@
                             </div>
 
                             <div class="wrap-input100 validate-input">
-                                <input class="input100" type="text" name="mobile" placeholder="Mobile">
+                                <input class="input100" type="text" name="mobile" id="mobile" placeholder="Mobile">
                                 <span class="error"></span>
                                 <span class="symbol-input100">
 										<i class="fa fa-phone" aria-hidden="true"></i>
 									</span>
                             </div>
                             <div class="wrap-input100 validate-input">
-                                <select class="input100" name="country" id="country" placeholder="select country">
+                                <select class="input100" name="country" id="country" aria-invalid="country" placeholder="select country">
                                 </select>
                                 <span class="error"></span>
                                 <span class="symbol-input100">
@@ -73,14 +73,14 @@
                             </div>
 
                             <label class="custom-control custom-checkbox mt-4">
-                                <input type="checkbox" class="custom-control-input" name="terms" value="1">
-                                <span class="custom-control-label">Agree the <a href="{{url('api/terms')}}">terms and policy</a></span>
+                                <input type="checkbox" class="custom-control-input" name="terms" id="terms" value="1">
+                                <span class="custom-control-label">Agree the <a href="{{url('api/auth/terms')}}">terms and policy</a></span>
                             </label>
                             <div class="container-login100-form-btn">
                                 <input type="submit" name="submit" value="Register" id="submit" class="login100-form-btn btn-primary">
                             </div>
                             <div class="text-center pt-3">
-                                <p class="text-dark mb-0">Already have account?<a href="{{url('api/login')}}" class="text-primary ml-1">Sign In</a></p>
+                                <p class="text-dark mb-0">Already have account?<a href="{{url('api/auth/login-form')}}" class="text-primary ml-1">Sign In</a></p>
                             </div>
                         </form>
                     </div>
@@ -126,43 +126,87 @@
 
         });
 
-        $('#registerForm').on("submit",function(event){
+        $('#registerForm').on("submit",function(event) {
             event.preventDefault();
+            if (validate() === true) {
             var form = $(this).serialize();
             $.ajax({
-                url:"register",
-                data:form,
-             /*   contentType:false,
-                cache:false,
-                processData:false,*/
-                type:"POST",
-                success:function(response){
+                url: "register",
+                data: form,
+                /*   contentType:false,
+                   cache:false,
+                   processData:false,*/
+                type: "POST",
+                success: function (response) {
 
-                    if (response.msg){
+                    if (response.msg) {
                         $("#registerForm")[0].reset();
                         $(".error").text("");
                         Toast.fire({
-                            type:'success',
-                            title:response.msg,
+                            type: 'success',
+                            title: response.msg,
                         });
-                    }else {
+                    } else {
                         printErrorMsg(response);
                     }
 
                 },
-                error:function(error){
+                error: function (error) {
                     Toast.fire({
-                        type:'error',
-                        title:'Something Error Found, Please try again.',
+                        type: 'error',
+                        title: 'Something Error Found, Please try again.',
                     });
                 }
             });
+        }else{
+             return false;
+        }
         });
+
         function printErrorMsg(msg) {
             $(".error").text("");
             $.each(msg,function(key,value) {
                 $("."+key+"err").text(value);
             });
+        }
+
+        function validate() {
+            if ($("#firstname").val() == "") {
+                $("#firstname").focus();
+                Toast.fire({
+                    type: 'error',
+                    title: 'First name is required!',
+                });
+                return false;
+            }if ($("#lastname").val() == "") {
+                $("#lastname").focus();
+                Toast.fire({
+                    type: 'error',
+                    title: 'Last name is required!',
+                });
+                return false;
+            }if ($("#email").val() == "") {
+                $("#email").focus();
+                Toast.fire({
+                    type: 'error',
+                    title: 'Email is required!',
+                });
+                return false;
+            }if ($("#mobile").val() == "") {
+                $("#mobile").focus();
+                Toast.fire({
+                    type: 'error',
+                    title: 'Mobile is required!',
+                });
+                return false;
+            }if ($("#country").val() == "") {
+                $("#country").focus();
+                Toast.fire({
+                    type: 'error',
+                    title: 'Country is required!',
+                });
+                return false;
+            }
         }
     </script>
 @endsection

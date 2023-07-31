@@ -56,37 +56,161 @@
 </div>
 
 @include('admin.includes.styleJs')
-<script>
+<script type="text/javascript">
+    //  SweetAlert2
+    const Toast = Swal.mixin({
+        toast:true,
+        position:'top-end',
+        icon:'success',
+        showConfirmbutton: false,
+        timer:3000
+    });
+
+    // localStorage.removeItem("accessToken");
+    // localStorage.removeItem("expires_in");
+    // localStorage.removeItem("userData");
+
     $.ajaxSetup({
         headers:{
             'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
         }
     });
+    var base_url = window.location.origin;
+    var current_url = window.location.href;
+    localStorage.setItem("currentURL", current_url);
+
+    let getToken = localStorage.getItem("accessToken");
+    $("#hiddenToken").val(getToken);
+    $("#hiddenMobileToken").val(getToken);
+    let getExpiry = localStorage.getItem("expires_in");
+    let created_at = localStorage.getItem("created_at");
+    let tokenCreateTime = new Date(created_at).getTime() / 1000;
+    let currentTime = new Date().getTime() / 1000;
+    let now = Math.floor(currentTime - tokenCreateTime);
+
+    if(now >= getExpiry){
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("expires_in");
+    }
+
+    if(getToken == null || getExpiry == null){
+        window.location.assign(base_url+"/login");
+    }
     $(document).ready(function () {
-        getSidebar();
-        //
+        let getUser = localStorage.getItem("userData");
+
+        var data = JSON.parse(getUser);
+        //call sidebar fucntion
+        var isauthor =data.isauthorized;
+
+        if (isauthor == 1){
+            getSidebar();
+        }
+
+        $(".getFullName").html(data.firstname +' '+data.lastname);
+        $(".getCompany").html(data.company);
+        $(".getEmail").html(data.email);
+        $(".getMobile").html(data.mobile);
+        $(".getAddress").html(data.address +','+data.city+','+data.state+'-'+data.zipcode+','+data.country);
+        $(".getNid").html(data.nid);
+        $(".getuserName").html(data.username);
+        $(".memberShip").html(new Date(data.createdon).toLocaleDateString('en-us', {year:"numeric", month:"short", day:"numeric"}));
+
+        //desktop logout function
+
+        $("#logout-desktop").on('submit',function (event) {
+            event.preventDefault();
+            var form = $(this).serialize();
+            $.ajax({
+                url:"{{route('user_logout')}}",
+                data:form,
+                type:"POST",
+                success:function(response){
+                    if (response.success == true){
+
+                        localStorage.removeItem("accessToken");
+                        localStorage.removeItem("expires_in");
+                        localStorage.removeItem("userData");
+                        window.location.assign(base_url+"/login");
+                    }
+                    $(".error").text("");
+                    Toast.fire({
+                        type:'success',
+                        title:response.msg,
+                    });
+                },
+                error:function(error){
+                    Toast.fire({
+                        type:'error',
+                        title:'Something Error Found, Please try again.',
+                    });
+                }
+            });
+        });
+
+
+        //mobile logout function
+
+        $("#logout-mobile").on('submit',function (event) {
+            event.preventDefault();
+            var form = $(this).serialize();
+            $.ajax({
+                url:"{{route('user_logout')}}",
+                data:form,
+                type:"POST",
+                success:function(response){
+                    if (response.success == true){
+                        localStorage.removeItem("accessToken");
+                        localStorage.removeItem("expires_in");
+                        localStorage.removeItem("userData");
+                        window.location.assign(base_url+"/login");
+                    }
+                    $(".error").text("");
+                    Toast.fire({
+                        type:'success',
+                        title:response.msg,
+                    });
+                },
+                error:function(error){
+                    Toast.fire({
+                        type:'error',
+                        title:'Something Error Found, Please try again.',
+                    });
+                }
+            });
+        });
     });
+
+    //sidebar function
     function getSidebar(){
         $.ajax({
-            url:"{{url('api/get/sidebar')}}",
+            url:"{{url('get/sidebar')}}",
             type:"GET",
             success:function(response){
                 var html = '<li><h3>Main</h3></li>';
-
+                let url;
                 if (response.sidebar.length > 0){
-                    for (let i=0;i<response.sidebar.length; i++){
+                    for (let i=0;i<response.sidebar.length; i++) {
                         let sidebar = response.sidebar;
-                        let url = sidebar[i]['url'];
-                        if (sidebar[i]['parent'] == null && sidebar[i]['url'] != null){
-                            html +="<li>"+'<a class="side-menu__item" href="'+url+'"><i class="side-menu__icon '+sidebar[i]['icon']+'"></i><span class="side-menu__label">'+sidebar[i]['name']+'</span></a>'+"</li>";
+                        if (getToken == null) {
+                            url = base_url+"/login";
+                        }else {
+                            url = sidebar[i]['url'];
                         }
-                        else{
-                            html +="<li class='slide'>"+'<a class="side-menu__item submenu" data-toggle="slide" href="javascript:void(0)" onclick="getSubmenu(this)"><i class="side-menu__icon '+sidebar[i]['icon']+'"></i><span class="side-menu__label">'+sidebar[i]['name']+'</span><i class="angle fa fa-angle-right"></i></a><ul class="slide-menu">';
-                            for (let j=0; j<response.submenu.length; j++){
+                        if (sidebar[i]['parent'] == null && sidebar[i]['url'] != null) {
+                            html += "<li>" + '<a class="side-menu__item active" href="' + url + '"><i class="side-menu__icon ' + sidebar[i]['icon'] + '"></i><span class="side-menu__label">' + sidebar[i]['name'] + '</span></a>' + "</li>";
+                        } else {
+                            html += "<li class='slide'>" + '<a class="side-menu__item submenu" data-toggle="slide" href="javascript:void(0)" onclick="getSubmenu(this)"><i class="side-menu__icon ' + sidebar[i]['icon'] + '"></i><span class="side-menu__label">' + sidebar[i]['name'] + '</span><i class="angle fa fa-angle-right"></i></a><ul class="slide-menu">';
+                            for (let j = 0; j < response.submenu.length; j++) {
                                 let submenu = response.submenu;
-                                let suburl = submenu[j]['url'];
-                                if (submenu[j]['parent'] == sidebar[i]['id'] && submenu[j]['url'] != null){
-                                    html +="<li>"+'<a href="'+suburl+'" class="slide-item"><i class="'+submenu[j]['icon']+'"></i><span class="side-menu__label ml-1">'+submenu[j]['name']+'</span></a>'+"</li>";
+                                let suburl;
+                                if (getToken == null) {
+                                    suburl = base_url+"/login";
+                                }else {
+                                    suburl = submenu[j]['url'];
+                                }
+                                if (submenu[j]['parent'] == sidebar[i]['id'] && submenu[j]['url'] != null) {
+                                    html += "<li>" + '<a href="' + suburl + '" class="slide-item"><i class="' + submenu[j]['icon'] + '"></i><span class="side-menu__label ml-1">' + submenu[j]['name'] + '</span></a>' + "</li>";
                                 }
                                 // $(".submenu").html(sub);
                             }
@@ -106,6 +230,12 @@
         });
     }
 
+    $('.side-menu__item').click(function(){
+        $('.side-menu__item').each(function(){
+            $(this).removeClass('active');
+        });
+        $(this).addClass('active');
+    });
 
     function getSubmenu(menu) {
         menu.classList.toggle("active");
@@ -116,9 +246,7 @@
             dropdownContent.style.display = "block";
         }
     }
-    // $(".side-menu__item").on('click',function () {
-    //     alert(234)
-    // })
+
 
 </script>
 </body>

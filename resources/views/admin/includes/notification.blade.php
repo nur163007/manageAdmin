@@ -135,9 +135,14 @@
 										<a class="dropdown-item" href="#">
 											<i class="dropdown-icon mdi mdi-compass-outline"></i> Need help?
 										</a>
-										<a class="dropdown-item" href="{{ url('/' . $page='login') }}">
-											<i class="dropdown-icon mdi  mdi-logout-variant"></i> Sign out
-										</a>
+                                        <form id="logout-desktop">
+                                        <a class="dropdown-item" href="#">
+                                            <i class="dropdown-icon mdi  mdi-logout-variant"></i>
+                                            @csrf
+                                            <input type="hidden" name="token" id="hiddenToken">
+                                            <input type="submit" name="submit" value="Signout" class="bg-transparent border-0 w-100 text-left">
+                                        </a>
+                                        </form>
 									</div>
 								</div>
 								<div class="dropdown d-md-flex header-settings">

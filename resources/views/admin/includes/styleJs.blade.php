@@ -6,8 +6,9 @@
 
 <!-- BOOTSTRAP JS -->
 <script src="{{ URL::asset('assets/plugins/bootstrap/js/popper.min.js') }}"></script>
+<script src="{{URL::asset('assets/js/jwt-decode.js')}}"></script>
 
-<script src="{{ URL::asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/bootstrap/js/bootstrap.js') }}"></script>
 
 <!-- SPARKLINE JS-->
 <script src="{{ URL::asset('assets/plugins/jquery-sparkline/jquery.sparkline.min.js') }}"></script>
@@ -38,7 +39,7 @@
 
 <!-- DataTables -->
 <script src="{{ asset('assets/plugins/datatable/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('assets/plugins/datatable/dataTables.bootstrap4.min.js') }}"></script>
+<!-- <script src="{{ asset('assets/plugins/datatable/dataTables.bootstrap4.min.js') }}"></script> -->
 
 @yield('js')
 

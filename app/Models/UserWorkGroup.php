@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class UserWorkGroup extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'userid','workgroupid','issupervisor'
+    ];
 }

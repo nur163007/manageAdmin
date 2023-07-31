@@ -10,6 +10,6 @@ class Module extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name','url','sortorder','contentid','icon','sectionid','parent','active'
+        'name','url','sortorder','contentid','icon','sectionid','parent','active','display'
     ];
 }

@@ -56,7 +56,7 @@
 
                             </div>
                             <div class="text-center pt-3">
-                                <p class="text-dark mb-0">Not a member?<a href="{{url('api/registration-form')}}" class="text-primary ml-1">Sign UP now</a></p>
+                                <p class="text-dark mb-0">Not a member?<a href="{{url('api/auth/registration-form')}}" class="text-primary ml-1">Sign UP now</a></p>
                             </div>
 
                         </form>
@@ -73,6 +73,14 @@
 @section('js')
 
     <script>
+        var base_url = window.location.origin;
+
+        let getToken = localStorage.getItem("accessToken");
+        let getExpiry = localStorage.getItem("expires_in");
+        let currentURL = localStorage.getItem("currentURL");
+        if(getToken != null || getExpiry != null){
+            window.location.assign(currentURL);
+        }
 
         //  SweetAlert2
         const Toast = Swal.mixin({
@@ -95,27 +103,34 @@
             $.ajax({
                 url:"{{route('logincheck')}}",
                 data:form,
-                /*   contentType:false,
-                   cache:false,
-                   processData:false,*/
                 type:"POST",
                 success:function(response){
+                    localStorage.setItem("accessToken", response.access_token);
+                    localStorage.setItem("expires_in", response.expires_in);
+                    localStorage.setItem("created_at", response.created_at);
+                    let getToken = localStorage.getItem("accessToken");
+                    let getExpiry = localStorage.getItem("expires_in");
+                    let created_at = localStorage.getItem("created_at");
+                    let tokenCreateTime = new Date(created_at).getTime() / 1000;
+                    let currentTime = new Date().getTime() / 1000;
+                    let now = Math.floor(currentTime - tokenCreateTime);
 
-                    if (response.msg){
-                        window.location.assign("http://127.0.0.1:8000/api/dashboard");
+                    let r = JSON.stringify(response.user);
+                    let data = JSON.parse(r);
+                    localStorage.setItem("userData", r);
+                    // if (response.success == true){
+                        if(getToken != null || getExpiry >= now){
+                            window.location.assign(base_url+"/dashboard");
+                        }else{
+                            window.location.assign(base_url+"/login-form");
+                        }
+
                         // $("#loginForm")[0].reset();
                         $(".error").text("");
                         Toast.fire({
                             type:'success',
                             title:response.msg,
                         });
-                    }else {
-                        printErrorMsg(response);
-                        Toast.fire({
-                            type:'error',
-                            title:response.error,
-                        });
-                    }
                 },
                 error:function(error){
                     Toast.fire({

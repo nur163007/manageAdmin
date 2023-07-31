@@ -6,16 +6,26 @@ use App\Http\Controllers\MailController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Registration;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 
 class RegistrationController extends Controller
 {
+    public function _construct(){
+        $this->middleware('auth:api',['except'=>['login','register']]);
+    }
+
     public function showRegisterFrom(){
         return view('admin.register');
+    }
+
+    public function getTerms(){
+        return view('admin.terms');
     }
 
     public function register(Request $request)
@@ -25,17 +35,27 @@ class RegistrationController extends Controller
             'email' => 'required|string|email|max:80|unique:registrations',
         ]);
         if ($validator->fails()){
-            return response()->json($validator->errors());
+            return response()->json($validator->errors()->toJson(),400);
         }
         $user = Registration::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
+            'company' => $request->company,
             'email' => $request->email,
             'mobile' => $request->mobile,
+            'address' => $request->address,
+            'state' => $request->state,
+            'city' => $request->city,
+            'zipcode' => $request->zipcode,
             'country' => $request->country,
-            'terms' => $request->terms,
+            'nid' => $request->nid,
             'verification_link' =>sha1(time()),
         ]);
+
+        // return response()->json([
+        //     'msg' =>'Registration data sent to your email, please verified',
+        //      'user'=>$user,
+        //  ],200);
 
         if ($user != null){
             MailController::sendSignupEmail($user->firstname,$user->email,$user->verification_link);
@@ -43,7 +63,7 @@ class RegistrationController extends Controller
              return response()->json([
                 'msg' =>'Registration data sent to your email, please verified',
                  'user'=>$user,
-             ]);
+             ],200);
         }
 
     }
@@ -61,17 +81,60 @@ class RegistrationController extends Controller
                 'lastname' => $register->lastname,
                 'email' => $register->email,
                 'mobile' => $register->mobile,
+                'company' => $register->company,
+                'address' => $register->address,
+                'state' => $register->state,
+                'city' => $register->city,
+                'zipcode' => $register->zipcode,
                 'country' => $register->country,
-                'password' => Crypt::encrypt(Str::random(10)),
+                'nid' => $register->nid,
+                'password' => bcrypt('abc123456'),
                 'emailverified' => 1,
             ]);
 //            $password = bcrypt($user->password);
-            $password = Crypt::decrypt($user->password);
+            $password = 'abc123456';
             if ($user != null){
                 MailController::sendVerifyEmail($user->firstname,$user->email,$password);
-                return redirect('/api')->with('alert_success','Your account is active now,your username and password sent to your verified email.');
+                return redirect('/api/auth/login-form')->with('alert_success','Your account is active now,your username and password sent to your verified email.');
             }
         }
     }
+
+    public function loginForm(){
+        return view('admin.login');
+    }
+
+    public function login(Request $request){
+        // dd($request);
+        $validator = Validator::make($request->all(),[
+            'username' => 'required|string',
+            'password' => 'required|string|min:6|',
+        ]);
+        if ($validator->fails()){
+            return response()->json($validator->errors(),422);
+        }
+        if(!$token = auth()->attempt($validator->validated())){
+            return response()->json(['error' =>'unauthorized'],401);
+        }
+
+        return $this->respondWithToken($token);
+    }
+
+       protected function respondWithToken($token){
+       return response()->json([
+           'msg' => 'logged in successfully',
+           'success' => true,
+           'access_token'=>$token,
+           'token_type'=>'Bearer',
+           'created_at' => Date::now(),
+           'expires_in'=>auth()->factory()->getTTL()*60*8,
+           'user'=>auth()->user()
+       ]);
+   }
+
+   public function logout(Request $request){
+            auth()->logout();
+            return response()->json(['msg' =>'user logged out','success'=>true]);
+   }
 
 }
