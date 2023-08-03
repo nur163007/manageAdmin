@@ -1,4 +1,4 @@
-Hello {{$email_data['firstname']}}
+Hello {{$email_data['first_name']}}
 <br>
 <br>
 Welcome to our website

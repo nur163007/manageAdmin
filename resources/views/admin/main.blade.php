@@ -94,12 +94,13 @@
     }
 
     if(getToken == null || getExpiry == null){
-        window.location.assign(base_url+"/login");
+        window.location.assign(base_url+"/");
     }
     $(document).ready(function () {
         let getUser = localStorage.getItem("userData");
 
         var data = JSON.parse(getUser);
+        console.log(data);
         //call sidebar fucntion
         var isauthor =data.isauthorized;
 
@@ -107,14 +108,30 @@
             getSidebar();
         }
 
-        $(".getFullName").html(data.firstname +' '+data.lastname);
+
+        $(".getFullName").html(data.first_name +' '+data.last_name);
         $(".getCompany").html(data.company);
         $(".getEmail").html(data.email);
         $(".getMobile").html(data.mobile);
-        $(".getAddress").html(data.address +','+data.city+','+data.state+'-'+data.zipcode+','+data.country);
+        $(".getAddress").html(data.address +','+data.city+','+data.state+'-'+data.zip_code+','+data.country);
         $(".getNid").html(data.nid);
         $(".getuserName").html(data.username);
-        $(".memberShip").html(new Date(data.createdon).toLocaleDateString('en-us', {year:"numeric", month:"short", day:"numeric"}));
+        $(".memberShip").html(new Date(data.created_at).toLocaleDateString('en-us', {year:"numeric", month:"short", day:"numeric"}));
+        $(".getUserProfile").attr("src","{{asset('assets/images/users/profile')}}/"+data.avatar);
+
+        //form value declaration
+
+        $(".userid").val(data.id);
+        $("#exampleInputFirstname").val(data.first_name);
+        $("#exampleInputLastname").val(data.last_name);
+        $("#exampleInputCompany").val(data.company);
+        $("#exampleInputnumber").val(data.mobile);
+        $("#exampleInputAddress").val(data.address);
+        $("#exampleInputState").val(data.state);
+        $("#exampleInputCity").val(data.city);
+        $("#exampleInputZipcode").val(data.zip_code);
+        // $("#country").val(data.country).change();
+
 
         //desktop logout function
 
@@ -131,7 +148,7 @@
                         localStorage.removeItem("accessToken");
                         localStorage.removeItem("expires_in");
                         localStorage.removeItem("userData");
-                        window.location.assign(base_url+"/login");
+                        window.location.assign(base_url+"/");
                     }
                     $(".error").text("");
                     Toast.fire({
@@ -163,7 +180,7 @@
                         localStorage.removeItem("accessToken");
                         localStorage.removeItem("expires_in");
                         localStorage.removeItem("userData");
-                        window.location.assign(base_url+"/login");
+                        window.location.assign(base_url+"/");
                     }
                     $(".error").text("");
                     Toast.fire({
@@ -179,6 +196,26 @@
                 }
             });
         });
+
+        //get all country function
+
+        $.ajax({
+            url: "{{ route('country') }}",
+            type: "GET",
+            success: function (response) {
+                var html = '<option value=""> choose a country</option>';
+                if (response.length >0){
+                    for (let i=0;i<response.length; i++){
+                        html +='<option value="'+response[i]['countrycode']+'">'+response[i]['countryname']+'</option>';
+                    }
+
+                }
+
+                $("#country").html(html);
+                $("#country").val(data.country).change();
+            }
+
+        });
     });
 
     //sidebar function
@@ -193,7 +230,7 @@
                     for (let i=0;i<response.sidebar.length; i++) {
                         let sidebar = response.sidebar;
                         if (getToken == null) {
-                            url = base_url+"/login";
+                            url = base_url+"/";
                         }else {
                             url = sidebar[i]['url'];
                         }
@@ -205,7 +242,7 @@
                                 let submenu = response.submenu;
                                 let suburl;
                                 if (getToken == null) {
-                                    suburl = base_url+"/login";
+                                    suburl = base_url+"/";
                                 }else {
                                     suburl = submenu[j]['url'];
                                 }
@@ -246,6 +283,149 @@
             dropdownContent.style.display = "block";
         }
     }
+
+    function ResetForm() {
+        $("#passwordChange")[0].reset();
+    }
+
+    function ResetDataForm() {
+        location.reload();
+    }
+
+    // Resller password change function
+
+    $('#passwordChange').on("submit",function(event) {
+        event.preventDefault();
+            var form = $(this).serialize();
+            $.ajax({
+                url: "{{route('change.password')}}",
+                data: form,
+                type: "POST",
+                success: function (response) {
+
+                    if (response.success == true){
+                        Toast.fire({
+                            type:'success',
+                            title:response.msg,
+                        });
+                        $("#passwordChange")[0].reset();
+                        localStorage.removeItem("accessToken");
+                        localStorage.removeItem("expires_in");
+                        localStorage.removeItem("userData");
+                        window.location.assign(base_url+"/");
+                    }else{
+                        Toast.fire({
+                            type:'error',
+                            title:response.msg,
+                        });
+                    }
+
+                },
+                error: function (error) {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Something Error Found, Please try again.',
+                    });
+                }
+            });
+    });
+
+//    Reseller profile data update funciton
+
+    $('#updateProfileData').on("submit",function(event) {
+        event.preventDefault();
+        var form = $(this).serialize();
+        $.ajax({
+            url: "{{route('change.user.data')}}",
+            data: form,
+            type: "POST",
+            success: function (response) {
+
+                if (response.success == true){
+                    Toast.fire({
+                        type:'success',
+                        title:response.msg,
+                    });
+                    // $("#updateProfileData")[0].reset();
+                    let r = JSON.stringify(response.user);
+                    let data = JSON.parse(r);
+                    localStorage.setItem("userData", r);
+                    location.reload();
+                }else{
+                    Toast.fire({
+                        type:'error',
+                        title:response.msg,
+                    });
+                }
+
+            },
+            error: function (error) {
+                Toast.fire({
+                    type: 'error',
+                    title: 'Something Error Found, Please try again.',
+                });
+            }
+        });
+    });
+
+
+    //    Reseller profile image update funciton
+
+    $('#profileImageForm').on("submit",function(event) {
+        event.preventDefault();
+        var form = $(this).serialize();
+        $.ajax({
+            url: "{{route('change.profile.image')}}",
+            data: form,
+            type: "POST",
+            success: function (response) {
+
+                if (response.success == true){
+                    Toast.fire({
+                        type:'success',
+                        title:response.msg,
+                    });
+                    // $("#updateProfileData")[0].reset();
+                    let r = JSON.stringify(response.user);
+                    let data = JSON.parse(r);
+                    localStorage.setItem("userData", r);
+                    location.reload();
+                }else{
+                    Toast.fire({
+                        type:'error',
+                        title:response.msg,
+                    });
+                }
+
+            },
+            error: function (error) {
+                Toast.fire({
+                    type: 'error',
+                    title: 'Something Error Found, Please try again.',
+                });
+            }
+        });
+    });
+
+    //image preview function
+
+    $("#updateImageId").hide();
+
+    function displayImage(e){
+        if ($("#profileImage").val() != ''){
+            $("#updateImageId").show();
+        }
+        if(e.files[0]){
+            var reader = new FileReader();
+
+            reader.onload = function(e){
+                document.querySelector('.userpicimg').setAttribute('src',e.target.result);
+            }
+            reader.readAsDataURL(e.files[0]);
+        }
+
+    }
+
 
 
 </script>

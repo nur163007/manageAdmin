@@ -66,18 +66,14 @@
                 <div class="card-body text-center">
                     <div class="terms">
                         <p>Are you agree with this terms and condition?</p>
-                        <a href="{{url('api/auth/registration-form')}}" class="btn btn-primary text-white">Yes</a>
-                        <a href="{{url('api/auth/registration-form')}}" class="btn btn-secondary text-white">No</a>
+                        <a href="{{url('registration')}}" class="btn btn-primary text-white">Yes</a>
+                        <a href="{{url('registration')}}" class="btn btn-secondary text-white">No</a>
                     </div>
                 </div>
             </div>
         </div><!-- COL-END -->
     </div>
     <!-- ROW-1 CLOSE -->
-    </div>
-    </div>
-    <!-- CONTAINER CLOSE -->
-    </div>
 @endsection
 @section('js')
 @endsection

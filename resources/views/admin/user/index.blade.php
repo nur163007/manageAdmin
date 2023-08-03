@@ -317,7 +317,7 @@
         function getEditUser(id) {
             $("#password").attr("required", false);
             $.ajax({
-                url: "{{ url('api/auth/user-edit') }}/"+id,
+                url: "{{ url('user-edit') }}/"+id,
                 type: "GET",
                 success: function (response) {
                     let user = response.user;
@@ -349,7 +349,7 @@
             var result = confirm("Are you sure to delete?");
             if(result){
                 $.ajax({
-                    url: "{{ url('api/auth/user-delete') }}/"+id,
+                    url: "{{ url('user-delete') }}/"+id,
                     type: "DELETE",
                     success: function (response) {
                         console.log(response)

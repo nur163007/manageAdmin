@@ -183,4 +183,60 @@ class UserController extends Controller
     public function getEditProfile(){
         return view('admin.user.edit-profile');
     }
+
+    public function getChangePassword(Request $request){
+        $id = $request->userid;
+        // dd($id);
+        $password = User::findOrFail($id);
+
+        $old_pass = $password->password;
+
+        $current_pass =$request->oldpassword;
+        $new_pass = $request->newpassword;
+        $confirm_pass = $request->confirmpassword;
+
+        if(Hash::check($current_pass, $old_pass)){
+//             dd("ok");
+            if ($new_pass == $confirm_pass) {
+                $password->password = Hash::make($new_pass);
+                $password->save();
+
+                return response()->json(['msg' =>'Password change successfully','success'=>true]);
+            }
+            else{
+                return response()->json(['msg' =>'New password not matched','success'=>false]);
+            }
+        }
+        else{
+            return response()->json(['msg' =>'Previous password incorrect','success'=>false]);
+        }
+    }
+
+    public function getChangeProfileData(Request $request){
+        $id = $request->userid;
+        // dd($id);
+        $user = User::findOrFail($id);
+
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->company = $request->company;
+        $user->mobile = $request->mobile;
+        $user->address = $request->address;
+        $user->state = $request->state;
+        $user->city = $request->city;
+        $user->zip_code = $request->zip_code;
+        $user->country = $request->country;
+// dd($member);
+
+        if($user->update()){
+            return response()->json(['user'=>$user,'msg' =>'Profile updated successfully','success'=>true]);
+        }
+        else{
+            return response()->json(['msg' =>'Something Error Found !, Please try again.','success'=>false]);
+        }
+    }
+
+    public function getChangeProfileImage(Request $request){
+            dd($request->file('avatar'));
+    }
 }

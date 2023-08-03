@@ -217,7 +217,7 @@
         // edit option
         function getEditUserWorkgroup(id) {
             $.ajax({
-                url: "{{ url('api/auth/user-workgroup-edit') }}/"+id,
+                url: "{{ url('user-workgroup-edit') }}/"+id,
                 type: "GET",
                 success: function (response) {
 
@@ -240,7 +240,7 @@
             var result = confirm("Are you sure to delete?");
             if(result){
                 $.ajax({
-                    url: "{{ url('api/auth/user-workgroup-delete') }}/"+id,
+                    url: "{{ url('user-workgroup-delete') }}/"+id,
                     type: "DELETE",
                     success: function (response) {
 

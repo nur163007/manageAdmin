@@ -10,7 +10,7 @@
 @endsection
 @section('content')
     <!-- BACKGROUND-IMAGE -->
-    <div class="login-img">
+    <div class="login-img" style="background-color: #b3d7ff!important;">
 
         <!-- GLOABAL LOADER -->
         <div id="global-loader">
@@ -24,7 +24,7 @@
                 <!-- CONTAINER OPEN -->
                 <div class="col col-login mx-auto">
                     <div class="text-center">
-                        <img src="{{URL::asset('assets/images/brand/logo.png')}}" class="header-brand-img" alt="">
+                        <img src="{{URL::asset('assets/images/logos/OmniPOS-partners-panel-logo.png')}}" class="header-brand-img" alt="">
                     </div>
                 </div>
                 <div class="container-login100">
@@ -56,7 +56,7 @@
 
                             </div>
                             <div class="text-center pt-3">
-                                <p class="text-dark mb-0">Not a member?<a href="{{url('api/auth/registration-form')}}" class="text-primary ml-1">Sign UP now</a></p>
+                                <p class="text-dark mb-0">Not a member?<a href="{{url('registration')}}" class="text-primary ml-1">Sign UP now</a></p>
                             </div>
 
                         </form>
@@ -122,7 +122,7 @@
                         if(getToken != null || getExpiry >= now){
                             window.location.assign(base_url+"/dashboard");
                         }else{
-                            window.location.assign(base_url+"/login-form");
+                            window.location.assign(base_url+"/");
                         }
 
                         // $("#loginForm")[0].reset();

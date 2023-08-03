@@ -183,7 +183,7 @@
         // edit option
         function getEditLookup(id) {
             $.ajax({
-                url: "{{ url('api/auth/lookup-edit') }}/"+id,
+                url: "{{ url('lookup-edit') }}/"+id,
                 type: "GET",
                 success: function (response) {
 
@@ -202,7 +202,7 @@
             var result = confirm("Are you sure to delete?");
             if(result){
                 $.ajax({
-                    url: "{{ url('api/auth/lookup-delete') }}/"+id,
+                    url: "{{ url('lookup-delete') }}/"+id,
                     type: "DELETE",
                     success: function (response) {
 

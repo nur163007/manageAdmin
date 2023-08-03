@@ -27,11 +27,11 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-12">
                                 <div class="wideget-user-desc d-sm-flex">
-                                    <div class="wideget-user-img" style="height: 120px;width: 120px;">
-                                        <img class="" src="{{URL::asset('assets/images/users/profile')}}"  alt="user-img" class="avatar-xl rounded-circle">
+                                    <div class="wideget-user-img userpic  brround" style="height: 120px;width: 120px;box-shadow: 0 3px 10px 0 rgba(0,0,0,.15);">
+                                        <img src=""  alt="" class="rounded-circle getUserProfile">
                                     </div>
                                     <div class="user-wrap ml-3">
-                                        <h4 class="userName"></h4>
+                                        <h4 class="getFullName"></h4>
                                         <h6 class="text-muted mb-3">Member Since: <span class="memberShip"></span></h6>
                                         <a href="{{route('user.editProfile')}}" class="btn btn-primary mt-1 mb-1"><i class="fa fa-edit"></i> Edit profile</a>
                                     </div>

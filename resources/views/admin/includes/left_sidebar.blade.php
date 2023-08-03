@@ -2,22 +2,22 @@
 <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 <aside class="app-sidebar">
     <div class="side-header">
-        <a class="header-brand1" href="{{ url('/') }}">
-            <img src="{{URL::asset('assets/images/brand/logo.png')}}" class="header-brand-img desktop-logo" alt="logo">
-            <img src="{{URL::asset('assets/images/brand/logo-1.png')}}"  class="header-brand-img toggle-logo" alt="logo">
-            <img src="{{URL::asset('assets/images/brand/logo-2.png')}}" class="header-brand-img light-logo" alt="logo">
-            <img src="{{URL::asset('assets/images/brand/logo-3.png')}}" class="header-brand-img light-logo1" alt="logo">
+        <a class="header-brand1" href="{{ url('/dashboard') }}">
+            <img src="{{URL::asset('assets/images/logos/OmniPOS-partners-panel-logo.png')}}" class="header-brand-img desktop-logo" alt="logo">
+            <img src="{{URL::asset('assets/images/logos/OmniPOS-partners-panel-logo.png')}}"  class="header-brand-img toggle-logo" alt="logo">
+            <img src="{{URL::asset('assets/images/logos/OmniPOS-partners-panel-logo.png')}}" class="header-brand-img light-logo" alt="logo">
+            <img src="{{URL::asset('assets/images/logos/OmniPOS-partners-panel-logo.png')}}" class="header-brand-img light-logo1" alt="logo">
         </a><!-- LOGO -->
         <a aria-label="Hide Sidebar" class="app-sidebar__toggle ml-auto" data-toggle="sidebar" href="#"></a><!-- sidebar-toggle-->
     </div>
     <div class="app-sidebar__user">
         <div class="dropdown user-pro-body text-center">
             <div class="user-pic">
-                <img src="{{URL::asset('assets/images/users/Nur.jpeg')}}" alt="user-img" class="avatar-xl rounded-circle">
+                <img src="" alt="user-img" class="avatar-xl rounded-circle getUserProfile">
             </div>
             <div class="user-info">
-                <h6 class=" mb-0 text-dark userName"></h6>
-                <span class="text-muted app-sidebar__user-name text-sm">Administrator</span>
+                <h6 class=" mb-0 text-dark getFullName"></h6>
+                <span class="text-muted app-sidebar__user-name text-sm getCompany"></span>
             </div>
         </div>
     </div>

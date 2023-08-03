@@ -11,7 +11,7 @@ class MailController extends Controller
 {
     public static function sendSignupEmail($name, $email,$verification_link){
         $data =[
-            'firstname'=>$name,
+            'first_name'=>$name,
             'verification_link'=>$verification_link
         ];
         Mail::to($email)->send(new SignupEmail($data));
@@ -19,7 +19,7 @@ class MailController extends Controller
 
     public static function sendVerifyEmail($name, $email,$password){
         $data =[
-            'firstname'=>$name,
+            'first_name'=>$name,
             'password'=>$password,
             'username'=>$email
         ];

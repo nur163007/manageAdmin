@@ -1,4 +1,4 @@
-Hello {{$email_data['firstname']}}
+Hello {{$email_data['first_name']}}
 <br>
 <br>
 Welcome to our website
@@ -6,7 +6,7 @@ Welcome to our website
 Please click to below link to verify your email and activated your account.
 <br>
 <br>
-<a href="http://127.0.0.1:8000/api/auth/verify?code={{$email_data['verification_link']}}">Click Here</a>
+<a href="http://127.0.0.1:8000/api/verify?code={{$email_data['verification_link']}}">Click Here</a>
 <br>
 <br>
 Thank you

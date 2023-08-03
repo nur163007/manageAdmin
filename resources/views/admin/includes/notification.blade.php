@@ -64,7 +64,7 @@
 									<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
 										<div class="message-menu">
 											<a class="dropdown-item d-flex pb-3" href="#">
-												<span class="avatar avatar-md brround mr-3 align-self-center cover-image" data-image-src="{{URL::asset('assets/images/users/1.jpg')}}"></span>
+												<span class="avatar avatar-md brround mr-3 align-self-center cover-image" data-image-src="{{URL::asset('public/assets/images/users/1.jpg')}}"></span>
 												<div>
 													<strong>Madeleine</strong> Hey! there I' am available....
 													<div class="small text-muted">
@@ -107,14 +107,14 @@
 								<div class="dropdown profile-1">
 									<a href="#" data-toggle="dropdown" class="nav-link pr-2 leading-none d-flex">
 										<span>
-											<img src="{{URL::asset('assets/images/users/Nur.jpeg')}}" alt="profile-user" class="avatar  profile-user brround cover-image">
+											<img src="" alt="profile-user" class="getUserProfile avatar profile-user brround cover-image">
 										</span>
 									</a>
 									<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
 										<div class="drop-heading">
 											<div class="text-center">
-												<h5 class="text-dark mb-0">Elizabeth Dyer</h5>
-												<small class="text-muted">Administrator</small>
+												<h5 class="text-dark mb-0 getFullName"></h5>
+												<small class="text-muted getCompany"></small>
 											</div>
 										</div>
 										<div class="dropdown-divider m-0"></div>

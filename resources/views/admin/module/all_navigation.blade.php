@@ -228,7 +228,7 @@
     // edit option
         function getEditData(id) {
             $.ajax({
-                url: "{{ url('api/auth/navigation-edit') }}/"+id,
+                url: "{{ url('navigation-edit') }}/"+id,
                 type: "GET",
                 success: function (response) {
 
@@ -254,7 +254,7 @@
             var result = confirm("Are you sure to delete?");
             if(result){
                 $.ajax({
-                    url: "{{ url('api/auth/navigation-delete') }}/"+id,
+                    url: "{{ url('navigation-delete') }}/"+id,
                     type: "DELETE",
                     success: function (response) {
                         console.log(response)

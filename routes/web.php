@@ -19,36 +19,14 @@ use App\Http\Controllers\ModuleController;
 |
 */
 
-
-// Route::get('/login', [UserController::class,'login']);
-// //Route::post('/loginCheck', [UserController::class,'loginCheck'])->name('loginCheck');
-// Route::get('/registration-form',[RegistrationController::class, 'showRegisterFrom']);
-// Route::get('/countries',[CountryController::class,'getCountry'])->name('country');
-// Route::get('/terms',[UserController::class,'getTerms']);
-// Route::post('/member/register',[UserController::class,'store'])->name('store.register');
-
-
-// //Route::middleware('login')->group(function(){
-//     Route::post('/register',[RegistrationController::class,'register']);
-//     Route::get('/verify',[RegistrationController::class,'verifyEmail']);
-//     Route::post('/logincheck',[UserController::class,'loginCheck'])->name('logincheck');
-//     Route::get('/dashboard',[DashboardController::class,'index']);
-//     Route::get('user-crate',[UserController::class,'userCreate'])->name('create.user');
-//     Route::get('all-users',[UserController::class,'userIndex'])->name('user.index');
-//     Route::get('get/sidebar',[ModuleController::class,'sidebar'])->name('get.sidebar');
-//     Route::get('/navigation',[ModuleController::class,'viewNavigation'])->name('view.navigation');
-//     Route::get('/show-navigation',[ModuleController::class,'allNavigation'])->name('all.navigation');
-
-//});
-
 Route::group(['middleware'=>'api'],function($router){
     Route::get('/registration',[RegistrationController::class, 'showRegisterFrom']);
     Route::get('/countries',[CountryController::class,'getCountry'])->name('country');
     Route::get('/terms',[RegistrationController::class,'getTerms']);
-    Route::post('/register',[RegistrationController::class,'register']);
-    Route::get('/verify',[RegistrationController::class,'verifyEmail']);
-    Route::get('/login',[RegistrationController::class,'loginForm']);
-    Route::post('/loginCheck',[RegistrationController::class,'login'])->name('logincheck');
+//    Route::post('/register',[RegistrationController::class,'register']);
+//    Route::get('/verify',[RegistrationController::class,'verifyEmail']);
+    Route::get('/',[RegistrationController::class,'loginForm']);
+//    Route::post('/loginCheck',[RegistrationController::class,'login'])->name('logincheck');
     Route::post('/logout',[RegistrationController::class,'logout'])->name('user_logout');
 
     //      Dashboard route
@@ -108,5 +86,8 @@ Route::group(['middleware'=>'api'],function($router){
     // Profile route
     Route::get('/user/profile',[UserController::class,'getProfile'])->name('user.profile');
     Route::get('/user/edit/profile',[UserController::class,'getEditProfile'])->name('user.editProfile');
+    Route::post('/user/profile/change/password',[UserController::class,'getChangePassword'])->name('change.password');
+    Route::post('/user/profile/change/data',[UserController::class,'getChangeProfileData'])->name('change.user.data');
+    Route::post('/user/profile/image/change',[UserController::class,'getChangeProfileImage'])->name('change.profile.image');
 });
 

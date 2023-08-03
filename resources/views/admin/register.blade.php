@@ -74,13 +74,13 @@
 
                             <label class="custom-control custom-checkbox mt-4">
                                 <input type="checkbox" class="custom-control-input" name="terms" id="terms" value="1">
-                                <span class="custom-control-label">Agree the <a href="{{url('api/auth/terms')}}">terms and policy</a></span>
+                                <span class="custom-control-label">Agree the <a href="{{url('terms')}}">terms and policy</a></span>
                             </label>
                             <div class="container-login100-form-btn">
                                 <input type="submit" name="submit" value="Register" id="submit" class="login100-form-btn btn-primary">
                             </div>
                             <div class="text-center pt-3">
-                                <p class="text-dark mb-0">Already have account?<a href="{{url('api/auth/login-form')}}" class="text-primary ml-1">Sign In</a></p>
+                                <p class="text-dark mb-0">Already have account?<a href="{{url('/')}}" class="text-primary ml-1">Sign In</a></p>
                             </div>
                         </form>
                     </div>
@@ -171,15 +171,15 @@
         }
 
         function validate() {
-            if ($("#firstname").val() == "") {
-                $("#firstname").focus();
+            if ($("#first_name").val() == "") {
+                $("#first_name").focus();
                 Toast.fire({
                     type: 'error',
                     title: 'First name is required!',
                 });
                 return false;
-            }if ($("#lastname").val() == "") {
-                $("#lastname").focus();
+            }if ($("#last_name").val() == "") {
+                $("#last_name").focus();
                 Toast.fire({
                     type: 'error',
                     title: 'Last name is required!',

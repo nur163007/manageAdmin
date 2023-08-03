@@ -154,7 +154,7 @@
         // edit option
         function getEditRole(id) {
             $.ajax({
-                url: "{{ url('api/auth/role-edit') }}/"+id,
+                url: "{{ url('role-edit') }}/"+id,
                 type: "GET",
                 success: function (response) {
 
@@ -172,7 +172,7 @@
             var result = confirm("Are you sure to delete?");
             if(result){
                 $.ajax({
-                    url: "{{ url('api/auth/role-delete') }}/"+id,
+                    url: "{{ url('role-delete') }}/"+id,
                     type: "DELETE",
                     success: function (response) {
                         console.log(response)
