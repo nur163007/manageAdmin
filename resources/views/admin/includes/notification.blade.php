@@ -118,7 +118,7 @@
 											</div>
 										</div>
 										<div class="dropdown-divider m-0"></div>
-										<a class="dropdown-item" href="#">
+										<a class="dropdown-item" href="{{url('/user/profile')}}">
 											<i class="dropdown-icon mdi mdi-account-outline"></i> Profile
 										</a>
 										<a class="dropdown-item" href="#">

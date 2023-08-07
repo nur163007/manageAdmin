@@ -352,8 +352,8 @@ class ComposerStaticInit977996085fa96b782608abccd447f467
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -565,6 +565,7 @@ class ComposerStaticInit977996085fa96b782608abccd447f467
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\MailController' => __DIR__ . '/../..' . '/app/Http/Controllers/MailController.php',
         'App\\Http\\Controllers\\ModuleController' => __DIR__ . '/../..' . '/app/Http/Controllers/ModuleController.php',
+        'App\\Http\\Controllers\\PosAccountController' => __DIR__ . '/../..' . '/app/Http/Controllers/PosAccountController.php',
         'App\\Http\\Controllers\\RegistrationController' => __DIR__ . '/../..' . '/app/Http/Controllers/RegistrationController.php',
         'App\\Http\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
@@ -583,6 +584,7 @@ class ComposerStaticInit977996085fa96b782608abccd447f467
         'App\\Models\\Country' => __DIR__ . '/../..' . '/app/Models/Country.php',
         'App\\Models\\LookUp' => __DIR__ . '/../..' . '/app/Models/LookUp.php',
         'App\\Models\\Module' => __DIR__ . '/../..' . '/app/Models/Module.php',
+        'App\\Models\\PosAccount' => __DIR__ . '/../..' . '/app/Models/PosAccount.php',
         'App\\Models\\Registration' => __DIR__ . '/../..' . '/app/Models/Registration.php',
         'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
@@ -3220,6 +3222,7 @@ class ComposerStaticInit977996085fa96b782608abccd447f467
         'League\\Flysystem\\Util\\MimeType' => __DIR__ . '/..' . '/league/flysystem/src/Util/MimeType.php',
         'League\\Flysystem\\Util\\StreamHasher' => __DIR__ . '/..' . '/league/flysystem/src/Util/StreamHasher.php',
         'League\\MimeTypeDetection\\EmptyExtensionToMimeTypeMap' => __DIR__ . '/..' . '/league/mime-type-detection/src/EmptyExtensionToMimeTypeMap.php',
+        'League\\MimeTypeDetection\\ExtensionLookup' => __DIR__ . '/..' . '/league/mime-type-detection/src/ExtensionLookup.php',
         'League\\MimeTypeDetection\\ExtensionMimeTypeDetector' => __DIR__ . '/..' . '/league/mime-type-detection/src/ExtensionMimeTypeDetector.php',
         'League\\MimeTypeDetection\\ExtensionToMimeTypeMap' => __DIR__ . '/..' . '/league/mime-type-detection/src/ExtensionToMimeTypeMap.php',
         'League\\MimeTypeDetection\\FinfoMimeTypeDetector' => __DIR__ . '/..' . '/league/mime-type-detection/src/FinfoMimeTypeDetector.php',
@@ -3503,6 +3506,7 @@ class ComposerStaticInit977996085fa96b782608abccd447f467
         'Nette\\Utils\\IHtmlString' => __DIR__ . '/..' . '/nette/utils/src/compatibility.php',
         'Nette\\Utils\\Image' => __DIR__ . '/..' . '/nette/utils/src/Utils/Image.php',
         'Nette\\Utils\\ImageException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
+        'Nette\\Utils\\ImageType' => __DIR__ . '/..' . '/nette/utils/src/Utils/ImageType.php',
         'Nette\\Utils\\Json' => __DIR__ . '/..' . '/nette/utils/src/Utils/Json.php',
         'Nette\\Utils\\JsonException' => __DIR__ . '/..' . '/nette/utils/src/Utils/exceptions.php',
         'Nette\\Utils\\ObjectHelpers' => __DIR__ . '/..' . '/nette/utils/src/Utils/ObjectHelpers.php',

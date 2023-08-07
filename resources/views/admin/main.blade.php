@@ -108,6 +108,7 @@
             getSidebar();
         }
 
+        //all data show in deferent pages
 
         $(".getFullName").html(data.first_name +' '+data.last_name);
         $(".getCompany").html(data.company);
@@ -118,6 +119,8 @@
         $(".getuserName").html(data.username);
         $(".memberShip").html(new Date(data.created_at).toLocaleDateString('en-us', {year:"numeric", month:"short", day:"numeric"}));
         $(".getUserProfile").attr("src","{{asset('assets/images/users/profile')}}/"+data.avatar);
+
+
 
         //form value declaration
 
@@ -216,6 +219,42 @@
             }
 
         });
+
+        $.ajax({
+            url: "{{ url('/user/profile/nid/show') }}/"+data.id,
+            type: "GET",
+            success: function (response) {
+                var front ='';
+                var back ='';
+                if (response.data.length >0) {
+                    let r = JSON.stringify(response.data);
+                    var nid = JSON.parse(r);
+                    // console.log(nid)
+                    for (let i = 0; i < nid.length; i++) {
+                        if (nid[i]['doc_title'] ='NID FRONT PART'){
+                            front = nid[0]['doc_path'];
+                        }if(nid[i]['doc_title'] ='NID BACK PART'){
+                            back = nid[1]['doc_path'];
+                        }
+                    }
+                }
+                $("#hiddenFront").val(front);
+                $("#hiddenBack").val(back);
+
+                $("#showNIDFront").attr("src","{{asset('documents/nid/front')}}/"+front);
+                $("#showNIDBack").attr("src","{{asset('documents/nid/back')}}/"+back);
+
+                $("#showFrontNid").attr("src","{{asset('documents/nid/front')}}/"+front);
+                $("#showBackNid").attr("src","{{asset('documents/nid/back')}}/"+back);
+
+                if ($("#hiddenFront").val() !='' && $("#hiddenBack").val() !=''){
+                    $("#back_part").show();
+                }else{
+                    $("#back_part").hide();
+                }
+            }
+        });
+
     });
 
     //sidebar function
@@ -289,6 +328,12 @@
     }
 
     function ResetDataForm() {
+        location.reload();
+    }
+
+    function ResetNIDForm() {
+        $("#front_nid").val('');
+        $("#back_nid").val('');
         location.reload();
     }
 
@@ -371,13 +416,25 @@
 
     //    Reseller profile image update funciton
 
-    $('#profileImageForm').on("submit",function(event) {
+    $('#updateImageId').on("click",function(event) {
         event.preventDefault();
-        var form = $(this).serialize();
+        let profile = $("#profileImage")[0].files;
+        let userid = $(".userid").val();
+        var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+        var fd = new FormData();
+
+        // Append data
+        fd.append('profile',profile[0]);
+        fd.append('userid',userid);
+        fd.append('_token',CSRF_TOKEN);
         $.ajax({
             url: "{{route('change.profile.image')}}",
-            data: form,
-            type: "POST",
+            cache: false,
+                contentType: false,
+                processData: false,
+                type: 'post',
+                data: fd,
+                dataType: 'json',
             success: function (response) {
 
                 if (response.success == true){
@@ -386,7 +443,7 @@
                         title:response.msg,
                     });
                     // $("#updateProfileData")[0].reset();
-                    let r = JSON.stringify(response.user);
+                    let r = JSON.stringify(response.userProfile);
                     let data = JSON.parse(r);
                     localStorage.setItem("userData", r);
                     location.reload();
@@ -425,6 +482,91 @@
         }
 
     }
+//  NID UPLOAD FUNCTION
+
+    $("#back_part").hide();
+    //nid front part
+    function displayFrontPart(e){
+        if ($("#front_nid").val() != ''){
+            $("#back_part").show();
+        }
+        if(e.files[0]){
+            var reader = new FileReader();
+
+            reader.onload = function(e){
+                document.querySelector('#showFrontNid').setAttribute('src',e.target.result);
+            }
+            reader.readAsDataURL(e.files[0]);
+        }
+
+    }
+
+    //nid back part
+    $("#uploadNidDiv").hide();
+    function displayBackPart(e){
+        if ($("#back_nid").val() != ''){
+            $("#uploadNidDiv").show();
+        }
+        if(e.files[0]){
+            var reader = new FileReader();
+
+            reader.onload = function(e){
+                document.querySelector('#showBackNid').setAttribute('src',e.target.result);
+            }
+            reader.readAsDataURL(e.files[0]);
+        }
+
+    }
+
+    $('#uploadNidBtn').on("click",function(event) {
+        event.preventDefault();
+        let nid1 = $("#front_nid")[0].files;
+        let nid2 = $("#back_nid")[0].files;
+        let userid = $(".userid").val();
+        var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+        var fd = new FormData();
+
+        // Append data
+        fd.append('front_part',nid1[0]);
+        fd.append('back_part',nid2[0]);
+        fd.append('userid',userid);
+        fd.append('_token',CSRF_TOKEN);
+        $.ajax({
+            url: "{{route('change.profile.nid')}}",
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'post',
+            data: fd,
+            dataType: 'json',
+            success: function (response) {
+
+                if (response.success == true){
+                    Toast.fire({
+                        type:'success',
+                        title:response.msg,
+                    });
+                    // $("#updateProfileData")[0].reset();
+                    let r = JSON.stringify(response.niddata);
+
+                    localStorage.setItem("nidData", r);
+                    location.reload();
+                }else{
+                    Toast.fire({
+                        type:'error',
+                        title:response.msg,
+                    });
+                }
+
+            },
+            error: function (error) {
+                Toast.fire({
+                    type: 'error',
+                    title: 'Something Error Found, Please try again.',
+                });
+            }
+        });
+    });
 
 
 

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Auth;
 
 
 class RegistrationController extends Controller
@@ -136,8 +137,22 @@ class RegistrationController extends Controller
    }
 
    public function logout(Request $request){
-            auth()->logout();
-            return response()->json(['msg' =>'user logged out','success'=>true]);
+            // Auth::logout();
+             return response()->json(['msg' =>'user logged out','success'=>true]);
+//            try {
+//                // Adds token to blacklist.
+//                $forever = true;
+//                JWTAuth::parseToken()->invalidate( $forever );
+//
+//                return response()->json(['msg' =>'user logged out','success'=>true]);
+//            } catch ( TokenExpiredException $exception ) {
+//                return response()->json( ['msg' =>'token has expired','success'=>false], 401 );
+//            } catch ( TokenInvalidException $exception ) {
+//                return response()->json( ['msg' =>'invalid token','success'=>false], 401 );
+//
+//            } catch ( JWTException $exception ) {
+//                return response()->json( ['msg' =>'jwt exception','success'=>false], 500 );
+//            }
    }
 
 }

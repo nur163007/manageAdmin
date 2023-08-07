@@ -41,4 +41,5 @@
 <!-- COLOR SKIN CSS -->
 <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{URL::asset('assets/colors/color1.css')}}" />
 
-
+<!-- NID SHOW CSS -->
+<link rel="stylesheet" href="{{URL::asset('assets/css/nid-style.css')}}">

@@ -15,7 +15,7 @@
                                 <div class="dropdown profile-1">
                                     <a href="#" data-toggle="dropdown" class="nav-link pr-2 leading-none d-flex">
                                         <span>
-                                            <img src="{{URL::asset('assets/images/users/Nur.jpeg')}}" alt="profile-user" class="avatar  profile-user brround cover-image">
+                                            <img src="" alt="profile-user" class="avatar  profile-user brround cover-image getUserProfile">
                                         </span>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
@@ -26,7 +26,7 @@
                                             </div>
                                         </div>
                                         <div class="dropdown-divider m-0"></div>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{{url('/user/profile')}}">
                                             <i class="dropdown-icon mdi mdi-account-outline"></i> Profile
                                         </a>
                                         <a class="dropdown-item" href="#">

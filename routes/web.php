@@ -89,5 +89,7 @@ Route::group(['middleware'=>'api'],function($router){
     Route::post('/user/profile/change/password',[UserController::class,'getChangePassword'])->name('change.password');
     Route::post('/user/profile/change/data',[UserController::class,'getChangeProfileData'])->name('change.user.data');
     Route::post('/user/profile/image/change',[UserController::class,'getChangeProfileImage'])->name('change.profile.image');
+    Route::post('/user/profile/nid/change',[UserController::class,'getChangeNID'])->name('change.profile.nid');
+    Route::get('/user/profile/nid/show/{id}',[UserController::class,'getNIDdata'])->name('show.nid');
 });
 

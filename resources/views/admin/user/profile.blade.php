@@ -27,8 +27,8 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-12">
                                 <div class="wideget-user-desc d-sm-flex">
-                                    <div class="wideget-user-img userpic  brround" style="height: 120px;width: 120px;box-shadow: 0 3px 10px 0 rgba(0,0,0,.15);">
-                                        <img src=""  alt="" class="rounded-circle getUserProfile">
+                                    <div class="wideget-user-img userpic  brround" style="height: 130px;width: 130px;box-shadow: 0 3px 10px 0 rgba(0,0,0,.15);">
+                                        <img src=""  alt="" class="rounded-circle getUserProfile" style="height: 130px;width: 130px;">
                                     </div>
                                     <div class="user-wrap ml-3">
                                         <h4 class="getFullName"></h4>
@@ -113,9 +113,12 @@
                                     <h5><strong>NID documents</strong></h5>
                                     <hr>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-6">
-                                        <img class="img-fluid rounded mb-5" src="{{URL::asset('assets/images/media/8.jpg')}}" alt="banner image">
+                                <div class="row mb-5">
+                                    <div class="bg-white mainDiv">
+                                        <img src="" alt="FRONT PAGE OF NATIONAL ID" id="showNIDFront">
+                                    </div>
+                                    <div class="bg-white mainDiv">
+                                        <img src="" alt="BACK PAGE OF NATIONAL ID" id="showNIDBack">
                                     </div>
                                 </div>
                                 <div class="media-heading">
