@@ -1,8 +1,8 @@
 @extends('admin.main')
 @section('title','navigation')
 @section('css')
-    <link href="{{ URL::asset('assets/plugins/morris/morris.css')}}" rel="stylesheet">
-    <link href="{{ URL::asset('assets/plugins/rating/rating.css')}}" rel="stylesheet">
+{{--    <link href="{{ URL::asset('assets/plugins/morris/morris.css')}}" rel="stylesheet">--}}
+{{--    <link href="{{ URL::asset('assets/plugins/rating/rating.css')}}" rel="stylesheet">--}}
 @endsection
 @section('page-header')
     <!-- PAGE-HEADER -->
@@ -24,7 +24,7 @@
                             <h3 class="card-title">All Navigation</h3>
                         </div>
                         <div class="col-lg-6 text-right">
-                            <button class="btn btn-info"  data-target="#navigationForm" data-toggle="modal" data-original-title="Add New navigation" onclick="ResetForm();">
+                            <button class="btn btn-info"  data-target="#navigationForm" data-toggle="modal" data-original-title="Add New navigation" onclick="ResetNavForm();">
                                 <i class="fa fa-plus" aria-hidden="true"></i>
                                 <span class="hidden-xs">Add New Navigation</span>
                             </button>
@@ -57,7 +57,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title">Navigation Form</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="ResetForm();">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="ResetNavForm();">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
@@ -105,7 +105,7 @@
                                         <label class="wc-error pull-left" id="form_error"></label>
                                         <input type="submit" name="submit" value="Submit" class="btn btn-primary mr-3" id="btnNavFormSubmit">
 {{--                                        <button type="button" class="btn btn-primary mr-3" id="btnUserFormSubmit" >Submit</button>--}}
-                                        <button type="button" class="btn btn-default btn-outline" data-dismiss="modal" aria-label="Close" onclick="ResetForm();">Close</button>
+                                        <button type="button" class="btn btn-default btn-outline" data-dismiss="modal" aria-label="Close" onclick="ResetNavForm();">Close</button>
                                     </div>
                             </div>
                         </form>
@@ -121,8 +121,9 @@
 
     <script type="text/javascript">
 
-        function ResetForm() {
+        function ResetNavForm() {
             $('#form-navigation')[0].reset();
+            $('#hiddenNavId').val(0);
         }
 
         $(document).ready(function () {
@@ -153,77 +154,63 @@
                 ],
             });
 
-        });
+            // PARENT NAV ROUTE
+            getParent();
 
-        // PARENT NAV ROUTE
-        $.ajax({
-            url: "{{ route('parent') }}",
-            type: "GET",
-            success: function (response) {
-                // console.log(response)
-                var html = '<option value=""> choose a parent</option>';
-                if (response.length >0){
-                    for (let i=0;i<response.length; i++){
-                        html +='<option value="'+response[i]['id']+'">'+response[i]['name']+'</option>';
-                    }
-                }
+            //    navigation submit
 
-                $("#parent").html(html);
-            }
+            $('#form-navigation').on("submit",function(event){
+                event.preventDefault();
+                var form = $(this).serialize();
+                $.ajax({
+                    url:"{{route('add.navigation')}}",
+                    data:form,
+                    type:"POST",
+                    success:function(response){
 
-        });
-
-
-    //    navigation submit
-
-        $('#form-navigation').on("submit",function(event){
-            event.preventDefault();
-            var form = $(this).serialize();
-            $.ajax({
-                url:"{{route('add.navigation')}}",
-                data:form,
-                type:"POST",
-                success:function(response){
-
-                    if (response.success == true){
-                        $("#form-navigation")[0].reset();
-                        $('#navigationForm').modal('hide');
+                        if (response.success == true){
+                            $("#form-navigation")[0].reset();
+                            $('#navigationForm').modal('hide');
+                            Toast.fire({
+                                type:'success',
+                                title:response.msg,
+                            });
+                            getSidebar(1);
+                            $('#navigation-table').DataTable().ajax.reload();
+                            ResetNavForm();
+                            getParent();
+                        }
+                    },
+                    error:function(error){
                         Toast.fire({
-                            type:'success',
-                            title:response.msg,
+                            type:'error',
+                            title:'Something Error Found, Please try again.',
                         });
-                        getSidebar();
-                        $('#navigation-table').DataTable().ajax.reload();
                     }
-                },
-                error:function(error){
-                    Toast.fire({
-                        type:'error',
-                        title:'Something Error Found, Please try again.',
-                    });
-                }
+                });
             });
+
         });
 
-    // //    search option
-    //     function searchData() {
-    //         var input, filter, table, tr, td, i, txtValue;
-    //         input = document.getElementById("myInput");
-    //         filter = input.value.toUpperCase();
-    //         table = document.getElementById("navigation-table");
-    //         tr = table.getElementsByTagName("tr");
-    //         for (i = 0; i < tr.length; i++) {
-    //             td = tr[i].getElementsByTagName("td")[1];
-    //             if (td) {
-    //                 txtValue = td.textContent || td.innerText;
-    //                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
-    //                     tr[i].style.display = "";
-    //                 } else {
-    //                     tr[i].style.display = "none";
-    //                 }
-    //             }
-    //         }
-    //     }
+        //get parent nav function
+        function getParent(){
+            $.ajax({
+                url: "{{ route('parent') }}",
+                type: "GET",
+                success: function (response) {
+                    // console.log(response)
+                    var html = '<option value=""> choose a parent</option>';
+                    if (response.length >0){
+                        for (let i=0;i<response.length; i++){
+                            html +='<option value="'+response[i]['id']+'">'+response[i]['name']+'</option>';
+                        }
+                    }
+
+                    $("#parent").html(html);
+                }
+
+            });
+        }
 
     // edit option
         function getEditData(id) {
@@ -263,8 +250,10 @@
                                 type:'success',
                                 title:response.msg,
                             });
-                            getSidebar();
+                            getSidebar(1);
                             $('#navigation-table').DataTable().ajax.reload();
+                            ResetNavForm();
+                            getParent();
                         }
 
                     },
@@ -281,16 +270,4 @@
         }
 
     </script>
-
-    <script src="{{ URL::asset('assets/js/index3.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/chart/Chart.bundle.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/chart/utils.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/morris/raphael-min.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/morris/morris.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/peitychart/jquery.peity.min.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/peitychart/peitychart.init.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/rating/jquery.barrating.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/rating/ratings.js') }}"></script>
-
-
 @endsection

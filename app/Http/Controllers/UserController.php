@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Doc;
 use App\Models\Module;
+use App\Models\Privilege;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -26,7 +27,9 @@ class UserController extends Controller
     public function userData(){
         $user= DB::table('users as u')
             ->join('roles as r','u.role','=','r.id')
-            ->select('u.*','r.name as rolename')->get();
+            ->select('u.*','r.name as rolename')
+            ->where('u.id','!=',1)
+            ->get();
         return response()->json(['data'=>$user],200);
     }
     public function getRole(){
@@ -131,7 +134,7 @@ class UserController extends Controller
     }
 
     public function roleData(){
-        $role = Role::all();
+        $role = Role::where('id','!=',1)->get();
         return response()->json(['data'=>$role],200);
     }
 
@@ -171,11 +174,23 @@ class UserController extends Controller
 
     public function deleteRole($id){
         $role = Role::findOrFail($id);
-        $role->delete();
-        return response()->json([
-            'msg'=>'Role deleted',
-            'success'=>true
-        ],200);
+
+        $user = User::WHERE('role','=',$id)->get();
+        $count = $user->count();
+
+        if ($count > 0){
+            return response()->json([
+                'msg'=>'This role has users,it could not be deleted!',
+                'success'=>false
+            ],200);
+        }else{
+            $delete = DB::DELETE("DELETE FROM `privileges` WHERE `roleid` = $id;");
+            $role->delete();
+            return response()->json([
+                'msg'=>'Role deleted',
+                'success'=>true
+            ],200);
+        }
     }
 
     public function getProfile(){
@@ -273,9 +288,12 @@ class UserController extends Controller
     public function getChangeNID(Request $request){
         $id = $request->userid;
 
+        $userdata = User::findOrFail($id);
+        $userdata->is_completed =1;
+        $userdata->update();
+
 //        $niddata = DB::table('docs')->select('docs.*')->where('user_id',$id)->get();
         $niddata = DB::select("SELECT * from docs where user_id = $id and doc_type ='3'");
-
 
         //FRONT PART OF NID UPLOAD
         if (!empty($niddata)) {
@@ -309,6 +327,7 @@ class UserController extends Controller
 
                     $nid = DB::update("UPDATE `docs` SET `doc_path`='$imageName' WHERE user_id = $id and doc_type=3 and doc_title ='NID BACK PART';");
                 }
+                $user_update =DB::update("UPDATE users SET registration_status = 2 where id=$id;");
                 if ($nid) {
                     return response()->json(['niddata' => $nid, 'msg' => 'NID updated successfully', 'success' => true]);
                 } else {
@@ -328,7 +347,7 @@ class UserController extends Controller
                 $path = public_path('documents/nid/front');
                 $front->move($path,$frontimageName);
 
-                $nid = DB::insert("insert into `docs` (`user_id`, `doc_type`, `doc_title`, `doc_path`) values ($id, 3, 'NID FRONT PART', '$frontimageName');");
+                $nid = DB::insert("insert into `docs` (`user_id`, `doc_type`, `doc_title`, `doc_path`,`is_uploaded`) values ($id, 3, 'NID FRONT PART', '$frontimageName',1);");
             }
             if($back = $request->file('back_part')){
                 $extention = $request->file('back_part')->getClientOriginalExtension();
@@ -336,8 +355,11 @@ class UserController extends Controller
                 $path = public_path('documents/nid/back');
                 $back->move($path,$backimageName);
 
-                $nid = DB::insert("insert into `docs` (`user_id`, `doc_type`, `doc_title`, `doc_path`) values ($id, 3, 'NID BACK PART', '$backimageName');");
+                $nid = DB::insert("insert into `docs` (`user_id`, `doc_type`, `doc_title`, `doc_path`,`is_uploaded`) values ($id, 3, 'NID BACK PART', '$backimageName',1);");
             }
+
+            $user_update =DB::update("UPDATE users SET registration_status = 2 where id=$id;");
+
             if ($nid){
                 return response()->json(['niddata'=>$nid,'msg' =>'NID Store successfully','success'=>true]);
             }else{
@@ -349,9 +371,46 @@ class UserController extends Controller
 
     public function getNIDdata($id){
         $niddata = DB::select("SELECT * from docs where user_id = $id;");
-
         if ($niddata){
-            return response()->json(['data'=>$niddata]);
+            return response()->json(['data'=>$niddata,'success'=>true]);
         }
     }
+
+    // POS FORM VISIBLE
+    public function posForm(){
+        return view('admin.pos.create-pos');
+    }
+
+    // view pos list page
+    public function viewPOS(){
+        return view('admin.pos.view-pos');
+    }
+
+    // view all pos list
+
+    public function posList($userid){
+
+        $pos = DB::table('registrations')
+            ->leftJoin('users', 'users.email', '=', 'registrations.email')
+            ->select('registrations.*','users.is_email_verified as verifyEmail','users.is_active','users.is_authorized','users.registration_status')
+            ->where('registrations.request_type','=',2)
+            ->where('registrations.partner_ref','=',$userid)
+            ->get();
+        if ($pos){
+            return response()->json(['data'=>$pos,'success'=>true]);
+        }
+    }
+
+    //  pos single data function
+
+    public function posIndividualData($id){
+        $posData = DB::table('registrations')
+            ->leftJoin('users', 'users.email', '=', 'registrations.email')
+            ->leftJoin('company_types', 'registrations.company_type', '=', 'company_types.id')
+            ->select('registrations.*','users.is_email_verified as verifyEmail','users.is_active','users.is_authorized','users.registration_status','company_types.name as type')
+            ->where('registrations.id','=',$id)
+            ->first();
+        return response()->json(['data'=>$posData,'success'=>true]);
+    }
+
 }

@@ -22,7 +22,7 @@
         </div>
     </div>
     <div class="sidebar-navs">
-        <ul class="nav  nav-pills-circle">
+{{--        <ul class="nav  nav-pills-circle">
             <li class="nav-item" data-toggle="tooltip" data-placement="top" title="Settings">
                 <a class="nav-link text-center m-2">
                     <i class="fe fe-settings"></i>
@@ -43,7 +43,7 @@
                     <i class="fe fe-power"></i>
                 </a>
             </li>
-        </ul>
+        </ul>--}}
     </div>
     <div class="sidebarerr text-center font-weight-bold mt-4"></div>
     <ul class="side-menu">

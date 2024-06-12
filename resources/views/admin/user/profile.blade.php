@@ -1,8 +1,8 @@
 @extends('admin.main')
 @section('title','dashboard')
 @section('css')
-    <link href="{{ URL::asset('assets/plugins/morris/morris.css')}}" rel="stylesheet">
-    <link href="{{ URL::asset('assets/plugins/rating/rating.css')}}" rel="stylesheet">
+{{--    <link href="{{ URL::asset('assets/plugins/morris/morris.css')}}" rel="stylesheet">--}}
+{{--    <link href="{{ URL::asset('assets/plugins/rating/rating.css')}}" rel="stylesheet">--}}
 @endsection
 @section('page-header')
     <!-- PAGE-HEADER -->
@@ -49,6 +49,7 @@
                                     <li class=""><a href="#profile" class="active show" data-toggle="tab">Profile</a></li>
                                     <li><a href="#security" data-toggle="tab" class="">Security</a></li>
                                     <li><a href="#documents" data-toggle="tab" class="">Documents</a></li>
+                                    <li  id="posPayment"><a href="#payment" data-toggle="tab" class="">Payments</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -125,6 +126,24 @@
                                     <h5><strong>Additional documents</strong></h5>
                                     <hr>
                                 </div>
+                            </div>
+                            <div class="tab-pane" id="payment">
+                                <div class="media-heading">
+                                    <h4><strong>Payment history</strong></h4><br>
+                                </div>
+                                <table id="user_payment_history" class="table table-hover dataTable table-striped width-full">
+                                    <thead>
+                                    <tr>
+                                        <th>Package</th>
+                                        <th>Billing period</th>
+                                        <th>Amount</th>
+                                        <th>Payment date</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="individual-payment-data">
+
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

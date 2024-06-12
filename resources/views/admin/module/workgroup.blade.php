@@ -1,8 +1,8 @@
 @extends('admin.main')
 @section('title','workgroup')
 @section('css')
-    <link href="{{ URL::asset('assets/plugins/morris/morris.css')}}" rel="stylesheet">
-    <link href="{{ URL::asset('assets/plugins/rating/rating.css')}}" rel="stylesheet">
+{{--    <link href="{{ URL::asset('assets/plugins/morris/morris.css')}}" rel="stylesheet">--}}
+{{--    <link href="{{ URL::asset('assets/plugins/rating/rating.css')}}" rel="stylesheet">--}}
 @endsection
 @section('page-header')
     <!-- PAGE-HEADER -->
@@ -159,7 +159,7 @@
                 success:function(response){
 
                     if (response.success == true){
-                        ResetForm();
+                        $('#form-workgroup')[0].reset();
                         $('#workgroupForm').modal('hide');
                         Toast.fire({
                             type:'success',
@@ -225,16 +225,5 @@
         }
 
     </script>
-
-    <script src="{{ URL::asset('assets/js/index3.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/chart/Chart.bundle.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/chart/utils.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/morris/raphael-min.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/morris/morris.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/peitychart/jquery.peity.min.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/peitychart/peitychart.init.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/rating/jquery.barrating.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/rating/ratings.js') }}"></script>
-
 
 @endsection

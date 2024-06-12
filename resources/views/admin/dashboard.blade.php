@@ -1,8 +1,15 @@
 @extends('admin.main')
 @section('title','dashboard')
 @section('css')
-    <link href="{{ URL::asset('assets/plugins/morris/morris.css')}}" rel="stylesheet">
-    <link href="{{ URL::asset('assets/plugins/rating/rating.css')}}" rel="stylesheet">
+    {{--    <link href="{{ URL::asset('assets/plugins/morris/morris.css')}}" rel="stylesheet">--}}
+    {{--    <link href="{{ URL::asset('assets/plugins/rating/rating.css')}}" rel="stylesheet">--}}
+    <style>
+        @media screen and (max-width: 560px) {
+            .PayMethod {
+                font-size: 13px;
+            }
+        }
+    </style>
 @endsection
 @section('page-header')
     <!-- PAGE-HEADER -->
@@ -16,385 +23,434 @@
     <!-- PAGE-HEADER END -->
 @endsection
 @section('content')
-
-    <div id="unauthoraisation">
-            <h1>Pending ducument verification</h1>
-            <h5>Click here to complete your profile information <a href="{{route('user.profile')}}" class="btn btn-info">Go profile</a></h5>
-        </div>
-    <div id="authorized">
-        <!-- ROW-1 OPEN -->
-        <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                <div class="card bg-primary img-card box-primary-shadow">
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <div class="text-white">
-                                <h2 class="mb-0 number-font">23,536</h2>
-                                <p class="text-white mb-0">Total Requests </p>
-                            </div>
-                            <div class="ml-auto"> <i class="fa fa-send-o text-white fs-30 mr-2 mt-2"></i> </div>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- COL END -->
-            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                <div class="card bg-secondary img-card box-secondary-shadow">
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <div class="text-white">
-                                <h2 class="mb-0 number-font">45,789</h2>
-                                <p class="text-white mb-0">Total Revenue</p>
-                            </div>
-                            <div class="ml-auto"> <i class="fa fa-bar-chart text-white fs-30 mr-2 mt-2"></i> </div>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- COL END -->
-            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                <div class="card  bg-success img-card box-success-shadow">
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <div class="text-white">
-                                <h2 class="mb-0 number-font">89,786</h2>
-                                <p class="text-white mb-0">Total Profit</p>
-                            </div>
-                            <div class="ml-auto"> <i class="fa fa-dollar text-white fs-30 mr-2 mt-2"></i> </div>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- COL END -->
-            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                <div class="card bg-info img-card box-info-shadow">
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <div class="text-white">
-                                <h2 class="mb-0 number-font">43,336</h2>
-                                <p class="text-white mb-0">Monthly Sales</p>
-                            </div>
-                            <div class="ml-auto"> <i class="fa fa-cart-plus text-white fs-30 mr-2 mt-2"></i> </div>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- COL END -->
-        </div>
-        <!-- ROW-1 CLOSED -->
-
-        <!-- ROW-2 OPEN -->
-        <div class="row">
-            <div class="col-md-12 col-lg-12 col-xl-6">
-                <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-6 ">
-                        <div class="card overflow-hidden">
-                            <div class="card-header">
-                                <h3 class="card-title">Price</h3>
-                                <div class="card-options">
-                                    <a class="btn btn-sm btn-primary" href="#">View</a>
-                                </div>
-                            </div>
-                            <div class="card-body ">
-                                <h5 class="mb-1">Total Price</h5>
-                                <h3 class="text-dark count mt-0 number-font">4,657</h3>
-                                <div class="progress progress-sm mt-0 mb-2">
-                                    <div class="progress-bar bg-primary w-75" role="progressbar"></div>
-                                </div>
-                                <div class=""><i class="fa fa-caret-up text-green"></i>10% increases</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class=" col-sm-12 col-md-6 col-lg-6">
-                        <div class="card overflow-hidden">
-                            <div class="card-header">
-                                <h3 class="card-title">Stock</h3>
-                                <div class="card-options">
-                                    <a class="btn btn-sm btn-secondary" href="#">View</a>
-                                </div>
-                            </div>
-                            <div class="card-body ">
-                                <h5 class="mb-1">Total Stock</h5>
-                                <h3 class="text-dark count mt-0 number-font">2,592</h3>
-                                <div class="progress progress-sm mt-0 mb-2">
-                                    <div class="progress-bar bg-secondary w-45" role="progressbar"></div>
-                                </div>
-                                <div class=""><i class="fa fa-caret-down text-danger"></i>12% decrease</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class=" col-sm-12 col-md-6 col-lg-6">
-                        <div class="card overflow-hidden">
-                            <div class="card-header">
-                                <h3 class="card-title">Revenue</h3>
-                                <div class="card-options">
-                                    <a class="btn btn-sm btn-success" href="#">View</a>
-                                </div>
-                            </div>
-                            <div class="card-body ">
-                                <h5 class="mb-1">Total Revenue</h5>
-                                <h3 class="text-dark count mt-0 number-font">3,517</h3>
-                                <div class="progress progress-sm mt-0 mb-2">
-                                    <div class="progress-bar bg-success w-50" role="progressbar"></div>
-                                </div>
-                                <div class=""><i class="fa fa-caret-down text-danger"></i>5% decrease</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class=" col-sm-12 col-md-6  col-lg-6 ">
-                        <div class="card overflow-hidden">
-                            <div class="card-header">
-                                <h3 class="card-title">Investment</h3>
-                                <div class="card-options">
-                                    <a class="btn btn-sm btn-info" href="#">View</a>
-                                </div>
-                            </div>
-                            <div class="card-body ">
-                                <h5 class="mb-1">Total Investment</h5>
-                                <h3 class="text-dark count mt-0 font-30 number-font">5,759</h3>
-                                <div class="progress progress-sm mt-0 mb-2">
-                                    <div class="progress-bar bg-info w-25" role="progressbar"></div>
-                                </div>
-                                <div class=""><i class="fa fa-caret-up text-success"></i>15% increase</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Revenue Vs Support Cost</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-wrapper ">
-                            <canvas id="revenue" class="areaChart chart-dropshadow"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- COL END -->
-        </div>
-        <!-- ROW-2 CLOSED -->
-
-        <!-- ROW-3 OPEN -->
-        <div class="row row-cards">
-            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-5">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Customer satisfaction</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-wrapper">
-                            <canvas id="doughutChart" class="donutShadow"></canvas>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col text-center">
-                                <strong class="h6">Satisfied</strong>
-                                <div class="mt-2 chart-dropshadow">
-                                    <span class="bar" data-peity='{ "fill": ["#5e2dd8 "]}'>6,2,8,4,3,8,1,3,6,5,9,2</span>
-                                </div>
-                            </div><!-- col -->
-                            <div class="col  text-center">
-                                <strong class="h6">UnSatisfied</strong>
-                                <div class="mt-2 chart-dropshadow">
-                                    <span class="bar" data-peity='{ "fill": ["#f9a300"]}'>9,2,8,1,4,8,9,8,2,1</span>
-                                </div>
-                            </div>
-                        </div><!-- col -->
-                    </div>
-                </div>
-            </div><!-- COL END -->
-            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-7">
-                <div class="card">
-                    <div class="card-header ">
-                        <h3 class="card-title">Rating Record</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive service">
-                            <table class="table table-bordered table-hover  mb-0 text-nowrap ">
-                                <thead>
-                                <tr>
-                                    <th>Total calls</th>
-                                    <th>Trend</th>
-                                    <th>Call Duration</th>
-                                    <th>Resolution Rate</th>
-                                    <th>Satisfaction Rate</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>5,245</td>
-                                    <td>Ryan MacLeod</td>
-                                    <td>5min</td>
-                                    <td>
-                                        <div class="progress progress-md mt-1 h-2">
-                                            <div class="progress-bar bg-primary w-50" role="progressbar"></div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="rating-stars">
-                                            <div class="rating-stars-container star-sm">
-                                                <select class="rating-fontawesome" name="rating" data-current-rating="4" autocomplete="off">
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>4,845</td>
-                                    <td>Jacob Sutherland</td>
-                                    <td>17min</td>
-                                    <td>
-                                        <div class="progress progress-md mt-1 h-2">
-                                            <div class="progress-bar bg-blue w-25" role="progressbar"></div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="rating-stars">
-                                            <div class="rating-stars-container star-sm">
-                                                <select class="rating-fontawesome" name="rating" data-current-rating="4" autocomplete="off">
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2,736</td>
-                                    <td>James Oliver</td>
-                                    <td>12min</td>
-                                    <td>
-                                        <div class="progress progress-md mt-1 h-2">
-                                            <div class="progress-bar bg-warning w-65" role="progressbar"></div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="rating-stars">
-                                            <div class="rating-stars-container star-sm">
-                                                <select class="rating-fontawesome" name="rating" data-current-rating="4" autocomplete="off">
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>3,637</td>
-                                    <td>Lisa Nash</td>
-                                    <td>25min</td>
-                                    <td>
-                                        <div class="progress progress-md mt-1 h-2">
-                                            <div class="progress-bar bg-danger w-70" role="progressbar"></div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="rating-stars">
-                                            <div class="rating-stars-container star-sm">
-                                                <select class="rating-fontawesome" name="rating" data-current-rating="4" autocomplete="off">
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>6,365</td>
-                                    <td>Alan Walsh</td>
-                                    <td>10min</td>
-                                    <td>
-                                        <div class="progress progress-md mt-1 h-2">
-                                            <div class="progress-bar bg-info w-45" role="progressbar"></div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="rating-stars">
-                                            <div class="rating-stars-container star-sm">
-                                                <select class="rating-fontawesome" name="rating" data-current-rating="4" autocomplete="off">
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>4,269</td>
-                                    <td>Pippa Mills</td>
-                                    <td>14min</td>
-                                    <td>
-                                        <div class="progress progress-md mt-1  h-2">
-                                            <div class="progress-bar bg-pink w-50" role="progressbar"></div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="rating-stars">
-                                            <div class="rating-stars-container star-sm">
-                                                <select class="rating-fontawesome" name="rating" data-current-rating="4" autocomplete="off">
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- COL END -->
-        </div>
-        <!-- ROW-3 CLOSED -->
-
+    <div id="admin">
+        @include('admin.individual_dashboard.admin_dashboard')
     </div>
-
+    <div id="partner">
+        @include('admin.individual_dashboard.partner_dashboard')
+    </div>
+    <div id="pos">
+        @include('admin.individual_dashboard.pos_dashboard')
+    </div>
 @endsection
 @section('js')
-    <script src="{{ URL::asset('assets/js/index3.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/chart/Chart.bundle.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/chart/utils.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/morris/raphael-min.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/morris/morris.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/peitychart/jquery.peity.min.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/peitychart/peitychart.init.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/rating/jquery.barrating.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/rating/ratings.js') }}"></script>
+
     <script type="text/javascript">
-        let getUser = localStorage.getItem("userData");
 
-        var data = JSON.parse(getUser);
+        $(document).ready(function () {
+            let getUser = localStorage.getItem("userData");
 
-        var isauthor =data.isauthorized;
-        $("#unauthoraisation").hide();
-        $("#authorized").hide();
+            var data = JSON.parse(getUser);
 
-        if (isauthor ==1){
-            $("#unauthoraisation").hide();
-            $("#authorized").show();
-        }else{
-            $("#unauthoraisation").show();
-            $("#authorized").hide();
+            var isauthor = data.is_authorized;
+            var isdocreject = data.is_doc_rejected;
+            var userrole = data.role;
+            var userId = data.id;
+            $(".posUser").val(userId);
+
+            $(".unauthoraisation").hide();
+            $(".authorized").hide();
+            $("#partner").hide();
+            $("#pos").hide();
+            $("#admin").hide();
+            $("#posPayment").hide();
+            $("#payment").hide();
+            $(".hidePaymentBtn").show();
+
+
+            if (userrole == 1 || userrole == 2) {
+                $("#partner").hide();
+                $("#pos").hide();
+                $("#admin").show();
+            } else if (userrole == 3) {
+                $("#partner").show();
+                $("#admin").hide();
+                $("#pos").hide();
+                if (isauthor == 1) {
+                    $(".unauthoraisation").hide();
+                    $(".authorized").show();
+                } else {
+                    $(".unauthoraisation").show();
+                    $(".authorized").hide();
+                    if (isdocreject == 0) {
+                        $(".notReject").show();
+                        $(".isReject").hide();
+                    } else {
+                        $(".notReject").hide();
+                        $(".isReject").show();
+                    }
+                }
+            } else if (userrole == 4) {
+                $("#partner").hide();
+                $("#admin").hide();
+                $("#pos").show();
+                if (isauthor == 1) {
+                    $(".unauthoraisation").hide();
+                    $(".authorized").show();
+                } else {
+                    $(".unauthoraisation").show();
+                    $(".authorized").hide();
+                    if (isdocreject == 0) {
+                        $(".notReject").show();
+                        $(".isReject").hide();
+                    } else {
+                        $(".notReject").hide();
+                        $(".isReject").show();
+                    }
+                }
+            }
+
+            //list all registration data
+
+            $('#verification_data_table').DataTable({
+                ajax: "{{ route('all.dashboard.data') }}",
+                columns: [
+                    {data: 'id'},
+                    {
+                        "data": null, "sortable": false, "class": "text-left padding-5",
+                        "render": function (data, type, full) {
+                            return '<p>' + data.first_name + ' ' + data.last_name + '</p>';
+                        }
+                    },
+                    {
+                        "data": null, "sortable": false, "class": "text-left padding-5",
+                        "render": function (data, type, full) {
+                            if (full['role'] == 3) {
+                                return '<p>Partner</p>';
+                            } else if (full['role'] == 4) {
+                                return '<p>POS Owner</p>';
+                            }
+
+                        }
+                    },
+                    {
+                        "data": null, "sortable": false, "class": "text-left padding-5",
+                        "render": function (data, type, full) {
+                            return '<p>' + data.address + ',' + data.city + '-' + data.zip_code + ',' + data.country + '</p>';
+                        }
+                    },
+                    {data: 'created_at'},
+                    {
+                        "data": null, "sortable": false, "class": "text-left padding-5",
+                        "render": function (data, type, full) {
+                            if (full["is_authorized"] == 1) {
+                                return '<p class="text-success">' + 'Accepted all documents' + '</p>';
+                            } else {
+                                if (full["is_completed"] == 0) {
+                                    return '<p class="text-warning">' + 'Pending Approval' + '</p>';
+                                } else {
+                                    if (full["is_doc_rejected"] == 0) {
+                                        return '<p class="text-warning">' + 'Pending Approval' + '</p>';
+                                    } else {
+                                        return '<p class="text-danger">' + 'Reject the user Request' + '</p>';
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "data": null, "sortable": false, "class": "text-left padding-5",
+                        "render": function (data, type, full) {
+                            return "<button class='btn btn-sm' data-toggle='Edit User' data-original-title='Edit User' onclick='getShowUserProfile(" + full['id'] + ")'><i class='fa fa-edit' style='font-size: 17px; color: blue;'></i></button>";
+                        }
+                    },
+                ],
+            });
+
+            //payment information table for pos owner payment
+
+            $('#payment_verification_table').DataTable({
+                ajax: "{{ route('payment.verification.data') }}",
+                columns: [
+                    {data: 'user_id'},
+                    {data: 'company'},
+                    {data: 'amount'},
+                    {
+                        "data": null, "sortable": false, "class": "text-left padding-5",
+                        "render": function (data, type, full) {
+                            var payDate = new Date(data.payment_date).toLocaleDateString('en-us', {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric"
+                            });
+                            if (full['payment_date'] != null) {
+                                return '<p>' + payDate + '</p>';
+                            } else {
+                                return '<p></p>';
+                            }
+
+                        }
+                    },
+                    {data: 'payment_method'},
+                    {
+                        "data": null, "sortable": false, "class": "text-left padding-5",
+                        "render": function (data, type, full) {
+                            if (full['payment_date'] != null) {
+                                return "<button class='btn btn-sm' data-target='#PaymentSlipModal' data-toggle='modal' data-original-title='View Slip' onclick='getPaymentSlip(" + full['id'] + ")' ><i class='fa fa-file-text-o text-primary' style='font-size: 15px;'></i></button>";
+                            }else{
+                                return '<p></p>';
+                            }
+                        }
+                    },
+                    {
+                        "data": null, "sortable": false, "class": "text-left padding-5",
+                        "render": function (data, type, full) {
+                            if (full['payment_date'] != null) {
+                                return "<button class='btn btn-sm' data-toggle='Edit User' data-original-title='Edit User' onclick='getUpdatePayment(" + full['id'] + ")'><i class='fa fa-check text-success' style='font-size: 15px;border: 1px solid green;border-radius: 3px;'></i></button>";
+                            } else {
+                                return '<p>Wait For payment</p>';
+                            }
+                        }
+                    },
+                ],
+            });
+
+
+            //list of pending data
+
+            $.ajax({
+                url: "{{ url('/user/pos/dashboard/list') }}/" + userId,
+                type: "GET",
+                success: function (response) {
+
+                    var list = '';
+                    var res = response.userinfo;
+                    if (response.success == true) {
+                        if (userrole == 3) {
+                            /*for (let i = 0; i < res.length - 1; i++) {
+                                if (res[i].registration_status == null) {
+                                    list += '<li class="mt-2 ml-5"><i class="fa fa-times" style="color:red;font-size: 15px;" aria-hidden="true"></i> ' + res[i].name + '</li>';
+                                } else {
+                                    list += '<li class="mt-2 ml-5"><i class="fa fa-check" style="color:limegreen;font-size: 15px;" aria-hidden="true"></i> ' + res[i].name + '</li>';
+                                }
+                            }*/
+                            if (res.registration_status == null) {
+                                list += '<li class="mt-2 ml-5"><i class="fa fa-times" style="color:red;font-size: 15px;" aria-hidden="true"></i> Doument upload</li>' +
+                                    '<li class="mt-2 ml-5"><i class="fa fa-times" style="color:red;font-size: 15px;" aria-hidden="true"></i> Admin Approval</li>';
+                            } else if (res.registration_status == 2) {
+                                list += '<li class="mt-2 ml-5"><i class="fa fa-check" style="color:limegreen;font-size: 15px;" aria-hidden="true"></i> Doument upload</li>' +
+                                    '<li class="mt-2 ml-5"><i class="fa fa-times" style="color:red;font-size: 15px;" aria-hidden="true"></i> Admin Approval</li>';
+                            } else if (res.registration_status == 3) {
+                                list += '<li class="mt-2 ml-5"><i class="fa fa-check" style="color:limegreen;font-size: 15px;" aria-hidden="true"></i> Doument upload</li>' +
+                                    '<li class="mt-2 ml-5"><i class="fa fa-check" style="color:limegreen;font-size: 15px;" aria-hidden="true"></i> Admin Approval</li>';
+                            }
+
+                        } else if (userrole == 4) {
+                            /*     for (let i = 0; i < res.length; i++) {
+                                     if (res[i].registration_status == null) {
+                                         list += '<li class="mt-2 ml-5"><i class="fa fa-times" style="color:red;font-size: 15px;" aria-hidden="true"></i> ' + res[i].name + '</li>';
+                                     } else {
+
+                                         list += '<li class="mt-2 ml-5"><i class="fa fa-check" style="color:limegreen;font-size: 15px;" aria-hidden="true"></i> ' + res[i].name + '</li>';
+                                     }
+                                 }*/
+                            if (res.registration_status == null) {
+                                list += '<li class="mt-2 ml-5"><i class="fa fa-times" style="color:red;font-size: 15px;" aria-hidden="true"></i> Doument upload</li>' +
+                                    '<li class="mt-2 ml-5"><i class="fa fa-times" style="color:red;font-size: 15px;" aria-hidden="true"></i> Admin Approval</li>' +
+                                    '<li class="mt-2 ml-5"><i class="fa fa-times" style="color:red;font-size: 15px;" aria-hidden="true"></i> Payment</li>';
+                            } else if (res.registration_status == 2) {
+                                list += '<li class="mt-2 ml-5"><i class="fa fa-check" style="color:limegreen;font-size: 15px;" aria-hidden="true"></i> Doument upload</li>' +
+                                    '<li class="mt-2 ml-5"><i class="fa fa-times" style="color:red;font-size: 15px;" aria-hidden="true"></i> Admin Approval</li>' +
+                                    '<li class="mt-2 ml-5"><i class="fa fa-times" style="color:red;font-size: 15px;" aria-hidden="true"></i> Payment</li>';
+                            } else if (res.registration_status == 3) {
+                                list += '<li class="mt-2 ml-5"><i class="fa fa-check" style="color:limegreen;font-size: 15px;" aria-hidden="true"></i> Doument upload</li>' +
+                                    '<li class="mt-2 ml-5"><i class="fa fa-check" style="color:limegreen;font-size: 15px;" aria-hidden="true"></i> Admin Approval</li>' +
+                                    '<li class="mt-2 ml-5"><i class="fa fa-times" style="color:red;font-size: 15px;" aria-hidden="true"></i> Payment</li>';
+                            }
+                        }
+                        $(".posAcountDashboard").html(list);
+                    }
+
+                }
+            });
+
+            $(".hidePaymentBtn").hide();
+            $(".dashbordIamge").hide();
+            $(".hidePosDashbord").hide();
+            // complete task after registration
+            $.ajax({
+                url: "{{ url('/user/pos/complete/payment') }}/" + userId,
+                type: "GET",
+                success: function (response) {
+                    var res = response.data;
+                    if (response.success == true) {
+                        for (let i = 0; i < res.length; i++) {
+                            if (res[i]['payment_date'] != null && res[i].admin_confirmation == 1) {
+                                $(".hidePaymentBtn").hide();
+                                $(".dashbordIamge").hide();
+                                $(".hidePosDashbord").show();
+                            } else {
+                                $(".hidePaymentBtn").show();
+                                $(".dashbordIamge").show();
+                                $(".hidePosDashbord").hide();
+                            }
+                        }
+                    }
+                }
+            });
+
+            //    in partner dashboard count users
+            $.ajax({
+                url: "{{ url('/user/partner/count/users') }}/" + userId,
+                type: "GET",
+                success: function (response) {
+                    var activeUser = response.activeUser;
+                    var suspend = response.suspendUser;
+
+                    $(".activeUsers").html(activeUser)
+                    $(".suspendUsers").html(suspend)
+
+                }
+            });
+        });
+
+        //individual profile show by admin
+        function getShowUserProfile(id) {
+            window.location.assign(base_url + "/user/profile/info/" + id);
+        }
+
+        //    payment proves image upload function
+
+        $("#showPaymentProves").hide();
+
+        function displayPaymentProves(e) {
+            if ($("#paymentProve").val() != '') {
+                $("#showPaymentProves").show();
+                $("#hidePaymentProves").hide();
+            } else {
+                $("#hidePaymentProves").show();
+                $("#showPaymentProves").hide();
+            }
+            if (e.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    document.querySelector('#showPaymentProves').setAttribute('src', e.target.result);
+                }
+                reader.readAsDataURL(e.files[0]);
+            }
+        }
+
+        //    store payment proves to payment_history table
+
+        $('#uploadPaymentBtn').on("click", function (event) {
+            event.preventDefault();
+            if (validatePos()) {
+                let paymentProve = $("#paymentProve")[0].files;
+                let userid = $(".posUser").val();
+                let paymentMethod = $('input[name="paymentMethod"]').val();
+                var CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+                var fd = new FormData();
+
+                // Append data
+                fd.append('paymentProve', paymentProve[0]);
+                fd.append('userid', userid);
+                fd.append('paymentMethod', paymentMethod);
+                fd.append('_token', CSRF_TOKEN);
+                $.ajax({
+                    url: "<?php echo e(route('upload.payment.method')); ?>",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    type: 'post',
+                    data: fd,
+                    dataType: 'json',
+                    success: function (response) {
+
+                        if (response.success == true) {
+                            Toast.fire({
+                                type: 'success',
+                                title: response.msg,
+                            });
+                            location.reload();
+                        } else {
+                            Toast.fire({
+                                type: 'error',
+                                title: response.msg,
+                            });
+                        }
+
+                    },
+                    error: function (error) {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Something Error Found, Please try again.',
+                        });
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+
+        function ResetPaymentMethodForm() {
+            $("#getPaymentMethodForm")[0].reset();
+            $("#hidePaymentProves").show();
+            $("#showPaymentProves").hide();
+        }
+
+        function validatePos() {
+            if (!($('input[name="paymentMethod"]')[0].checked || $('input[name="paymentMethod"]')[1].checked)) {
+                Toast.fire({
+                    type: 'error',
+                    title: 'Please choose the payment method.',
+                });
+                return false;
+            }
+            if ($('#paymentProve').val() == "") {
+                $('#paymentProve').focus();
+                Toast.fire({
+                    type: 'error',
+                    title: 'Please upload the payment proofs.',
+                });
+                return false;
+            }
+            return true;
+        }
+
+        //    update payment confirmation by admin
+        function getUpdatePayment(id) {
+            var result = confirm("Is payment is done then press OK");
+            if (result) {
+                $.ajax({
+                    url: "{{ url('give/payment/confirmation') }}/" + id,
+                    type: "GET",
+                    success: function (response) {
+                        if (response.success == true) {
+                            Toast.fire({
+                                type: 'success',
+                                title: response.msg,
+                            });
+                            $('#payment_verification_table').DataTable().ajax.reload();
+                        }
+                    },
+                    error: function (error) {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Something Error Found, Please try again.',
+                        });
+                    }
+
+                });
+            }
+        }
+
+        //get payment slip function
+        function getPaymentSlip(id) {
+            $.ajax({
+                url: "{{ url('get/payment/slip') }}/" + id,
+                type: "GET",
+                success: function (response) {
+                    $("#paymentSlip").attr("src", "{{asset('documents/paymentProof/pos')}}/" + response[0].ref_image);
+                },
+                error: function (error) {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'not found.',
+                    });
+                }
+
+            });
         }
     </script>
 

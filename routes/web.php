@@ -7,17 +7,11 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\ContentController;
+use App\Http\Controllers\BkashTokenizePaymentController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+
+Route::post('get/reset/password',[RegistrationController::class,'getResetPassword'])->name('reset.password');
 
 Route::group(['middleware'=>'api'],function($router){
     Route::get('/registration',[RegistrationController::class, 'showRegisterFrom']);
@@ -28,12 +22,13 @@ Route::group(['middleware'=>'api'],function($router){
     Route::get('/',[RegistrationController::class,'loginForm']);
 //    Route::post('/loginCheck',[RegistrationController::class,'login'])->name('logincheck');
     Route::post('/logout',[RegistrationController::class,'logout'])->name('user_logout');
+    Route::get('get/email/confirmation',[RegistrationController::class,'getEmailConfirmation'])->name('email.confirmation');
 
     //      Dashboard route
     Route::get('/dashboard',[DashboardController::class,'index']);
 
     //      Sidebar route
-    Route::get('get/sidebar',[ModuleController::class,'sidebar'])->name('get.sidebar');
+    Route::get('get/sidebar/{role}',[ModuleController::class,'sidebar'])->name('get.sidebar');
 
     //      Navigation route
     Route::get('/navigation',[ModuleController::class,'viewNavigation'])->name('view.navigation');
@@ -91,5 +86,45 @@ Route::group(['middleware'=>'api'],function($router){
     Route::post('/user/profile/image/change',[UserController::class,'getChangeProfileImage'])->name('change.profile.image');
     Route::post('/user/profile/nid/change',[UserController::class,'getChangeNID'])->name('change.profile.nid');
     Route::get('/user/profile/nid/show/{id}',[UserController::class,'getNIDdata'])->name('show.nid');
+
+    // dashboard route
+    Route::get('/show/dashboard/data',[ModuleController::class,'allUserRequest'])->name('all.dashboard.data');
+    Route::get('/show/dashboard/payment/verify/data',[ModuleController::class,'getPaymentNotification'])->name('payment.verification.data');
+    Route::get('/user/profile/info/{id}',[ModuleController::class,'showUserProfile'])->name('user.profile.page');
+    Route::get('/individual-users-profile/{id}',[ModuleController::class,'individualProfile'])->name('ind.profile.data');
+    Route::get('/user/accept/data/{id}',[ModuleController::class,'userAcceptFn'])->name('user.profile.accept');
+    Route::post('/user/reject/data/',[ModuleController::class,'userRejectFn'])->name('user.rejection.data');
+    Route::get('/user/pos/dashboard/list/{userid}',[ModuleController::class,'posDashboardInfo'])->name('user.pos.dashboard');
+    Route::get('/user/pos/complete/payment/{userid}',[ModuleController::class,'posCompletePayment'])->name('user.pos.complete.list');
+    Route::get('/user/partner/count/users/{userid}',[ModuleController::class,'countUsers'])->name('user.partner.count');
+    Route::post('/user/pos/payment/method/update',[ModuleController::class,'updatePaymentMethod'])->name('upload.payment.method');
+    Route::get('/give/payment/confirmation/{id}',[ModuleController::class,'updatePaymentConfirmation']);
+    Route::get('/get/payment/slip/{id}',[ModuleController::class,'getPaymentSlip']);
+
+
+    // Admin privilege route
+    Route::get('/privilege',[ModuleController::class,'privilegeIndex'])->name('view.privilege');
+    Route::get('show/privilege',[ModuleController::class,'showPrivilegeData'])->name('show.privilege');
+    Route::get('update/privilege',[ModuleController::class,'updatePrivilegeData'])->name('privilege.update');
+
+    // Payment Routes for bKash
+//    Route::get('/bkash/payment', [BkashTokenizePaymentController::class,'index']);
+//    Route::get('/bkash/create-payment', [BkashTokenizePaymentController::class,'createPayment'])->name('bkash-create-payment');
+//    Route::get('/bkash/callback', [BkashTokenizePaymentController::class,'callBack'])->name('bkash-callBack');
+
+    // Partner POS route
+    Route::get('/create-pos-account',[UserController::class,'posForm']);
+    Route::get('/pos-list',[UserController::class,'viewPOS']);
+    Route::get('/partner/view-pos/{userid}',[UserController::class,'posList'])->name('all.pos.list');
+    Route::get('/view/individual/pos/{id}',[UserController::class,'posIndividualData'])->name('single.pos.data');
+
+    // CONTENT CREATE ROUTE
+
+    Route::get('create-content',[ContentController::class,'create']);
+    Route::get('get/content-type',[ContentController::class,'getContentType'])->name('contenttype.lookup');
+    Route::post('add-content',[ContentController::class,'store'])->name('add.content');
+    Route::get('view-content',[ContentController::class,'index']);
+    Route::get('show-all-content',[ContentController::class,'show'])->name('show.all.content');
+
 });
 

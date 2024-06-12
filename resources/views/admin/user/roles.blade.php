@@ -1,8 +1,8 @@
 @extends('admin.main')
 @section('title','role')
 @section('css')
-    <link href="{{ URL::asset('assets/plugins/morris/morris.css')}}" rel="stylesheet">
-    <link href="{{ URL::asset('assets/plugins/rating/rating.css')}}" rel="stylesheet">
+{{--    <link href="{{ URL::asset('assets/plugins/morris/morris.css')}}" rel="stylesheet">--}}
+{{--    <link href="{{ URL::asset('assets/plugins/rating/rating.css')}}" rel="stylesheet">--}}
 @endsection
 @section('page-header')
     <!-- PAGE-HEADER -->
@@ -24,7 +24,7 @@
                         <h3 class="card-title">All Roles</h3>
                     </div>
                     <div class="col-lg-6 text-right">
-                        <button class="btn btn-info"  data-target="#roleForm" data-toggle="modal" data-original-title="Add New role" onclick="ResetForm();">
+                        <button class="btn btn-info"  data-target="#roleForm" data-toggle="modal" data-original-title="Add New role" onclick="ResetRoleForm();">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             <span class="hidden-xs">Add New Role</span>
                         </button>
@@ -55,7 +55,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">Role Form</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="ResetForm();">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="ResetRoleForm();">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
@@ -82,7 +82,7 @@
                                     <label class="wc-error pull-left" id="form_error"></label>
                                     <input type="submit" name="submit" value="Submit" class="btn btn-primary mr-3" id="btnRoleFormSubmit">
                                     {{--                                        <button type="button" class="btn btn-primary mr-3" id="btnUserFormSubmit" >Submit</button>--}}
-                                    <button type="button" class="btn btn-default btn-outline" data-dismiss="modal" aria-label="Close" onclick="ResetForm();">Close</button>
+                                    <button type="button" class="btn btn-default btn-outline" data-dismiss="modal" aria-label="Close" onclick="ResetRoleForm();">Close</button>
                                 </div>
                             </div>
                         </form>
@@ -98,11 +98,15 @@
 
     <script type="text/javascript">
 
-        function ResetForm() {
+        function ResetRoleForm() {
             $('#form-role')[0].reset();
+            $("#hiddenRoleId").val(0);
         }
 
         $(document).ready(function () {
+
+            // get role data
+
             $('#role-table').DataTable({
                 ajax:"{{ route('all.role') }}",
                 columns: [
@@ -118,40 +122,42 @@
                 ],
             });
 
-        });
+            //    role submit
 
-        //    navigation submit
+            $('#form-role').on("submit",function(event){
+                event.preventDefault();
+                var form = $(this).serialize();
+                $.ajax({
+                    url:"{{route('role.store')}}",
+                    data:form,
+                    type:"POST",
+                    success:function(response){
 
-        $('#form-role').on("submit",function(event){
-            event.preventDefault();
-            var form = $(this).serialize();
-            $.ajax({
-                url:"{{route('role.store')}}",
-                data:form,
-                type:"POST",
-                success:function(response){
-
-                    if (response.success == true){
-                        $("#form-role")[0].reset();
-                        $('#roleForm').modal('hide');
+                        if (response.success == true){
+                            $("#form-role")[0].reset();
+                            $('#roleForm').modal('hide');
+                            Toast.fire({
+                                type:'success',
+                                title:response.msg,
+                            });
+                            $('#role-table').DataTable().ajax.reload();
+                            ResetRoleForm();
+                        }
+                    },
+                    error:function(error){
                         Toast.fire({
-                            type:'success',
-                            title:response.msg,
+                            type:'error',
+                            title:'Something Error Found, Please try again.',
                         });
-                        $('#role-table').DataTable().ajax.reload();
                     }
-                },
-                error:function(error){
-                    Toast.fire({
-                        type:'error',
-                        title:'Something Error Found, Please try again.',
-                    });
-                }
+                });
             });
+
         });
 
 
-        // edit option
+
+        // edit role option
         function getEditRole(id) {
             $.ajax({
                 url: "{{ url('role-edit') }}/"+id,
@@ -167,7 +173,7 @@
             });
         }
 
-        //    DELETE OPTION
+        //    DELETE ROLE OPTION
         function getDeleteRole(id) {
             var result = confirm("Are you sure to delete?");
             if(result){
@@ -182,6 +188,14 @@
                                 title:response.msg,
                             });
                             $('#role-table').DataTable().ajax.reload();
+                        }
+                        else if(response.success == false){
+                            Toast.fire({
+                                type:'error',
+                                title:response.msg,
+                            });
+                            $('#role-table').DataTable().ajax.reload();
+                            ResetRoleForm();
                         }
 
                     },
@@ -198,16 +212,5 @@
         }
 
     </script>
-
-    <script src="{{ URL::asset('assets/js/index3.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/chart/Chart.bundle.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/chart/utils.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/morris/raphael-min.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/morris/morris.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/peitychart/jquery.peity.min.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/peitychart/peitychart.init.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/rating/jquery.barrating.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/rating/ratings.js') }}"></script>
-
 
 @endsection

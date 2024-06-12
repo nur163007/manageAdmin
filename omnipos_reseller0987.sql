@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 30, 2023 at 08:19 AM
+-- Generation Time: Oct 20, 2023 at 11:52 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.10
 
@@ -18,8 +18,61 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `manageadmin`
+-- Database: `omnipos_reseller0987`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `company_types`
+--
+
+CREATE TABLE `company_types` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `description` varchar(150) DEFAULT NULL,
+  `is_active` tinyint(2) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `company_types`
+--
+
+INSERT INTO `company_types` (`id`, `name`, `description`, `is_active`) VALUES
+(1, 'Retail', 'Retail Shop', 1),
+(2, 'Pharmecy', 'Medical Shop', 1),
+(3, 'Jwellary', 'Jwellary Shop', 1),
+(4, 'Electronic', 'Electronic Shop', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contents`
+--
+
+CREATE TABLE `contents` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `content_type` int(11) NOT NULL,
+  `meta_tag` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `meta_description` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `keywords` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_active` tinyint(4) NOT NULL DEFAULT 0,
+  `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_published` tinyint(4) NOT NULL DEFAULT 0,
+  `created_by` int(11) DEFAULT NULL,
+  `approved` tinyint(4) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `contents`
+--
+
+INSERT INTO `contents` (`id`, `content_type`, `meta_tag`, `meta_description`, `keywords`, `is_active`, `content`, `is_published`, `created_by`, `approved`, `created_at`, `updated_at`) VALUES
+(1, 7, 'website', 'A paragraph is defined as “a group of sentences or a single sentence that forms a unit” (Lunsford and Connors 116). Length and appearance do not determine whether a section in a paper is a paragraph. For instance, in some styles of writing, particularly journalistic styles', 'fst, omnipos, quickpos', 1, '<p><br></p><table class=\"table table-bordered\"><tbody><tr><td>col1</td><td>col2</td><td>col3</td></tr><tr><td>data1</td><td>data2</td><td>data3</td></tr></tbody></table><p><br></p>', 0, 1, 0, '2023-10-12 19:23:08', '2023-10-12 19:23:08'),
+(2, 8, 'blog', 'blogging on thailand', 'blog, content', 1, '<ol><li>write about blogging</li></ol>', 1, 1, 0, '2023-10-12 19:34:23', '2023-10-12 19:34:23'),
+(3, 9, 'fb content', 'facebook ads, google ads, twitter ads', 'facebook, google, twitter', 1, '<ol><li>facebook</li><li>google</li><li>twitter</li></ol>', 1, 1, 0, '2023-10-15 11:09:41', '2023-10-15 11:09:41');
 
 -- --------------------------------------------------------
 
@@ -293,6 +346,35 @@ INSERT INTO `countries` (`id`, `countryname`, `countrycode`, `created_at`, `upda
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `docs`
+--
+
+CREATE TABLE `docs` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `doc_type` int(11) NOT NULL,
+  `doc_title` varchar(50) NOT NULL,
+  `doc_path` varchar(250) NOT NULL,
+  `remarks` varchar(150) DEFAULT NULL,
+  `is_uploaded` tinyint(2) DEFAULT 0,
+  `admin_comments` varchar(250) DEFAULT NULL,
+  `is_rejected` tinyint(2) NOT NULL DEFAULT 0,
+  `is_verified` tinyint(2) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `docs`
+--
+
+INSERT INTO `docs` (`id`, `user_id`, `doc_type`, `doc_title`, `doc_path`, `remarks`, `is_uploaded`, `admin_comments`, `is_rejected`, `is_verified`) VALUES
+(1, 9, 3, 'NID FRONT PART', '36984.jpg', NULL, 1, 'invalid documents', 0, 0),
+(2, 9, 3, 'NID BACK PART', '32153.jpg', NULL, 1, 'invalid documents', 0, 0),
+(3, 13, 3, 'NID FRONT PART', '115047.jpg', NULL, 1, NULL, 0, 0),
+(4, 13, 3, 'NID BACK PART', '122780.jpg', NULL, 1, NULL, 0, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `failed_jobs`
 --
 
@@ -309,24 +391,34 @@ CREATE TABLE `failed_jobs` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `look_ups`
+-- Table structure for table `lookups`
 --
 
-CREATE TABLE `look_ups` (
+CREATE TABLE `lookups` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parent` int(11) DEFAULT NULL,
+  `moderation` int(11) NOT NULL DEFAULT 0,
+  `is_active` int(11) NOT NULL DEFAULT 0,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `look_ups`
+-- Dumping data for table `lookups`
 --
 
-INSERT INTO `look_ups` (`id`, `name`, `parent`, `description`, `created_at`, `updated_at`) VALUES
-(1, 'Company', NULL, 'all lookup create here', '2023-05-16 06:23:11', '2023-07-26 22:51:15');
+INSERT INTO `lookups` (`id`, `name`, `parent`, `moderation`, `is_active`, `description`, `created_at`, `updated_at`) VALUES
+(1, 'Registration Status', NULL, 0, 1, 'all registration status', '2023-10-15 04:53:33', '2023-10-15 04:53:33'),
+(2, 'Content', NULL, 0, 1, NULL, '2023-10-15 04:56:44', '2023-10-15 04:56:44'),
+(3, 'Project', NULL, 0, 1, 'add all project item', '2023-10-15 04:58:44', '2023-10-15 04:58:44'),
+(4, 'Document upload', 1, 0, 1, 'Documents upload after registraion', '2023-10-15 05:00:06', '2023-10-15 05:00:06'),
+(5, 'Admin Approval', 1, 0, 1, 'pending for admin approval', '2023-10-15 05:00:32', '2023-10-15 05:00:32'),
+(6, 'Payment', 1, 0, 1, 'payment for pos account', '2023-10-15 05:00:57', '2023-10-15 05:00:57'),
+(7, 'Website Content', 2, 0, 1, NULL, '2023-10-15 05:01:18', '2023-10-15 05:01:18'),
+(8, 'Blog Content', 2, 0, 1, NULL, '2023-10-15 05:01:32', '2023-10-15 05:01:32'),
+(9, 'Ad. Content', 2, 0, 1, NULL, '2023-10-15 05:01:49', '2023-10-15 05:01:49');
 
 -- --------------------------------------------------------
 
@@ -355,7 +447,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (8, '2023_03_27_090055_create_work_groups_table', 1),
 (9, '2023_03_27_090125_create_user_work_groups_table', 1),
 (10, '2023_03_27_090147_create_look_ups_table', 1),
-(11, '2023_03_28_052619_create_countries_table', 1);
+(11, '2023_03_28_052619_create_countries_table', 1),
+(12, '2023_10_03_164503_create_lookups_table', 2),
+(13, '2023_10_03_165137_create_lookups_table', 3),
+(14, '2023_10_03_170729_create_lookups_table', 4),
+(15, '2023_10_10_125553_create_contents_table', 5);
 
 -- --------------------------------------------------------
 
@@ -366,6 +462,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 CREATE TABLE `modules` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `url` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sortorder` int(11) DEFAULT NULL,
   `contentid` int(11) DEFAULT NULL,
@@ -382,18 +479,45 @@ CREATE TABLE `modules` (
 -- Dumping data for table `modules`
 --
 
-INSERT INTO `modules` (`id`, `name`, `url`, `sortorder`, `contentid`, `icon`, `sectionid`, `parent`, `active`, `display`, `created_at`, `updated_at`) VALUES
-(1, 'Dashboard', 'dashboard', NULL, NULL, 'ti-home', NULL, NULL, 1, '1', '2023-04-16 04:56:16', '2023-04-16 04:56:22'),
-(2, 'User/Role', NULL, NULL, NULL, 'fa fa-user', NULL, NULL, 1, '1', '2023-05-11 05:50:29', '2023-05-13 23:08:20'),
-(3, 'Module', NULL, NULL, NULL, 'fa fa-modx', NULL, NULL, 1, '1', '2023-04-16 04:56:25', '2023-04-16 04:56:28'),
-(4, 'Navigation', 'navigation', NULL, NULL, 'fa fa-bars ', NULL, 3, 1, '1', '2023-04-16 04:56:25', '2023-04-16 04:56:28'),
-(5, 'Workgroup', 'workgroup', NULL, NULL, 'fa fa-suitcase', NULL, 3, 1, '1', '2023-05-08 06:19:05', '2023-05-16 03:38:01'),
-(16, 'User', 'users', NULL, NULL, 'fa fa-user-plus', NULL, 2, 1, '1', '2023-05-14 05:06:19', '2023-05-14 05:14:29'),
-(17, 'Role', 'roles', NULL, NULL, 'fa fa-vcard-o', NULL, 2, 1, '1', '2023-05-14 05:29:21', '2023-05-14 05:33:32'),
-(18, 'User Workgroup', 'user-workgroup', NULL, NULL, 'fa fa-tasks', NULL, 3, 1, '1', '2023-05-16 04:47:20', '2023-05-16 04:47:20'),
-(19, 'Lookup', 'lookup', NULL, NULL, 'fa fa-search', NULL, 3, 1, '1', '2023-05-16 05:57:27', '2023-05-16 05:58:24'),
-(24, 'Content', NULL, NULL, NULL, 'fa fa-user', NULL, NULL, 1, '1', '2023-07-29 22:24:17', '2023-07-29 22:24:17'),
-(25, 'new content', 'new-content', NULL, NULL, NULL, NULL, 24, 1, '1', '2023-07-29 22:25:20', '2023-07-29 22:25:20');
+INSERT INTO `modules` (`id`, `name`, `title`, `url`, `sortorder`, `contentid`, `icon`, `sectionid`, `parent`, `active`, `display`, `created_at`, `updated_at`) VALUES
+(1, 'Dashboard', 'Dashboard', 'dashboard', NULL, NULL, 'ti-home', NULL, NULL, 1, '1', '2023-04-16 04:56:16', '2023-04-16 04:56:22'),
+(2, 'User/Role', 'User/Role', NULL, NULL, NULL, 'fa fa-user', NULL, NULL, 1, '1', '2023-05-11 05:50:29', '2023-05-13 23:08:20'),
+(3, 'Module', 'Module', NULL, NULL, NULL, 'fa fa-navicon', NULL, NULL, 1, '1', '2023-04-16 04:56:25', '2023-10-11 15:18:35'),
+(4, 'Navigation', 'Navigation', 'navigation', NULL, NULL, 'fa fa-bars ', NULL, 3, 1, '1', '2023-04-16 04:56:25', '2023-04-16 04:56:28'),
+(16, 'User', 'User', 'users', NULL, NULL, 'fa fa-user-plus', NULL, 2, 1, '1', '2023-05-14 05:06:19', '2023-05-14 05:14:29'),
+(17, 'Role', 'Role', 'roles', NULL, NULL, 'fa fa-vcard-o', NULL, 2, 1, '1', '2023-05-14 05:29:21', '2023-05-14 05:33:32'),
+(19, 'Lookup', 'Lookup', 'lookup', NULL, NULL, 'fa fa-search', NULL, 3, 1, '1', '2023-05-16 05:57:27', '2023-05-16 05:58:24'),
+(28, 'Privilege', NULL, 'privilege', NULL, NULL, 'fa fa-plus', NULL, 3, 1, '1', '2023-08-30 03:41:46', '2023-08-30 04:00:09'),
+(40, 'Content', NULL, NULL, NULL, NULL, 'fa fa-modx', NULL, NULL, 1, '1', '2023-10-10 07:13:50', '2023-10-11 15:20:16'),
+(41, 'Create Content', NULL, 'create-content', NULL, NULL, 'fa fa-circle-o', NULL, 40, 1, '1', '2023-10-10 07:14:36', '2023-10-11 18:11:42'),
+(42, 'View Content', NULL, 'view-content', NULL, NULL, 'fa fa-circle-o', NULL, 40, 1, '1', '2023-10-11 18:13:03', '2023-10-11 18:13:03'),
+(44, 'Create POS', NULL, 'create-pos-account', NULL, NULL, 'fa fa-user-plus', NULL, NULL, 1, '1', '2023-10-15 11:36:17', '2023-10-15 11:36:17'),
+(45, 'POS List', NULL, 'pos-list', NULL, NULL, 'fa fa-list', NULL, NULL, 1, '1', '2023-10-15 11:38:59', '2023-10-15 11:38:59');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `packages`
+--
+
+CREATE TABLE `packages` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `monthly_price` double NOT NULL,
+  `yearly_price` double NOT NULL,
+  `is_active` tinyint(2) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `packages`
+--
+
+INSERT INTO `packages` (`id`, `name`, `description`, `monthly_price`, `yearly_price`, `is_active`) VALUES
+(1, 'BASIC', 'basic', 700, 7560, 1),
+(2, 'STANDARD', 'basic', 1200, 12960, 1),
+(3, 'PREMIUM', 'basic', 1600, 17280, 1),
+(4, 'ENTERPRISE', 'basic', 2900, 31320, 1);
 
 -- --------------------------------------------------------
 
@@ -406,6 +530,32 @@ CREATE TABLE `password_resets` (
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment_history`
+--
+
+CREATE TABLE `payment_history` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `package_ref` int(11) NOT NULL,
+  `amount` double DEFAULT 0,
+  `payment_due_date` datetime NOT NULL,
+  `payment_date` timestamp NULL DEFAULT NULL,
+  `payment_method` varchar(10) DEFAULT NULL,
+  `ref_image` varchar(150) DEFAULT NULL,
+  `admin_confirmation` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `payment_history`
+--
+
+INSERT INTO `payment_history` (`id`, `user_id`, `package_ref`, `amount`, `payment_due_date`, `payment_date`, `payment_method`, `ref_image`, `admin_confirmation`, `created_at`) VALUES
+(5, 13, 1, 4700, '2023-10-19 11:41:14', '2023-10-19 05:43:17', 'bKash', '121089.png', 1, '2023-10-18 11:41:14');
 
 -- --------------------------------------------------------
 
@@ -428,23 +578,75 @@ CREATE TABLE `personal_access_tokens` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `privilege`
+-- Table structure for table `pos_accounts_request`
 --
 
-CREATE TABLE `privilege` (
+CREATE TABLE `pos_accounts_request` (
   `id` int(11) NOT NULL,
-  `role` int(11) DEFAULT NULL,
-  `moduleid` int(11) DEFAULT NULL,
-  `category` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `business_name` varchar(50) NOT NULL,
+  `business_type` int(11) NOT NULL,
+  `logo` varchar(50) DEFAULT NULL,
+  `website` varchar(50) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `mobile` varchar(20) DEFAULT NULL,
+  `nid` varchar(20) DEFAULT NULL,
+  `country` int(11) DEFAULT NULL,
+  `state` varchar(20) DEFAULT NULL,
+  `city` varchar(20) DEFAULT NULL,
+  `zip_code` varchar(20) DEFAULT NULL,
+  `address` varchar(50) DEFAULT NULL,
+  `contact_name` varchar(50) DEFAULT NULL,
+  `contact_number` varchar(14) DEFAULT NULL,
+  `username` varchar(50) DEFAULT NULL,
+  `package` int(11) DEFAULT NULL,
+  `billing_cycle` int(11) DEFAULT NULL,
+  `partner_id` int(11) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `privilege`
+-- Table structure for table `privileges`
 --
 
-INSERT INTO `privilege` (`id`, `role`, `moduleid`, `category`) VALUES
-(1, 3, 1, NULL),
-(2, 3, 2, NULL);
+CREATE TABLE `privileges` (
+  `id` int(11) NOT NULL,
+  `roleid` int(3) NOT NULL,
+  `moduleid` int(10) NOT NULL,
+  `read` tinyint(2) NOT NULL DEFAULT 1,
+  `write` tinyint(2) NOT NULL DEFAULT 0,
+  `create` tinyint(2) NOT NULL DEFAULT 0,
+  `delete` tinyint(2) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `privileges`
+--
+
+INSERT INTO `privileges` (`id`, `roleid`, `moduleid`, `read`, `write`, `create`, `delete`) VALUES
+(2, 1, 2, 1, 0, 0, 0),
+(3, 1, 3, 1, 0, 0, 0),
+(4, 1, 4, 1, 0, 0, 0),
+(6, 1, 16, 1, 0, 0, 0),
+(8, 1, 17, 1, 0, 0, 0),
+(10, 1, 19, 1, 0, 0, 0),
+(11, 1, 28, 1, 0, 0, 0),
+(12, 3, 1, 1, 0, 0, 0),
+(25, 1, 1, 1, 0, 0, 0),
+(29, 2, 1, 1, 0, 0, 0),
+(30, 2, 2, 1, 0, 0, 0),
+(48, 2, 16, 1, 0, 0, 0),
+(61, 4, 1, 1, 0, 0, 0),
+(68, 1, 40, 1, 0, 0, 0),
+(69, 1, 41, 1, 0, 0, 0),
+(70, 1, 42, 1, 0, 0, 0),
+(71, 1, 43, 1, 0, 0, 0),
+(72, 1, 44, 1, 0, 0, 0),
+(73, 3, 44, 1, 0, 0, 0),
+(74, 1, 45, 1, 0, 0, 0),
+(75, 3, 45, 1, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -454,30 +656,34 @@ INSERT INTO `privilege` (`id`, `role`, `moduleid`, `category`) VALUES
 
 CREATE TABLE `registrations` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `firstname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lastname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `company` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mobile` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `first_name` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `company` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `company_type` int(11) DEFAULT NULL,
+  `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mobile` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `state` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `city` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `zipcode` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `country` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `zip_code` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `country` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nid` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `verification_link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `is_verified` tinyint(4) NOT NULL DEFAULT 0,
-  `email_verified_at` timestamp NULL DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `expired_in` datetime DEFAULT NULL,
+  `is_email_verified` tinyint(4) NOT NULL DEFAULT 0,
+  `email_verified_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `request_type` int(11) DEFAULT NULL,
+  `partner_ref` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `registrations`
 --
 
-INSERT INTO `registrations` (`id`, `firstname`, `lastname`, `company`, `email`, `mobile`, `address`, `state`, `city`, `zipcode`, `country`, `nid`, `verification_link`, `is_verified`, `email_verified_at`, `created_at`, `updated_at`) VALUES
-(1, 'Nur', 'Mohammad', NULL, 'nur.mohammad@aaqa.co', '01789786453', NULL, NULL, NULL, NULL, 'BD', NULL, '949ca82f02135ac5c62de32ecb8324bb12bb01d3', 1, NULL, '2023-07-29 21:42:45', '2023-07-29 21:43:07');
+INSERT INTO `registrations` (`id`, `first_name`, `last_name`, `company`, `company_type`, `email`, `mobile`, `address`, `state`, `city`, `zip_code`, `country`, `nid`, `verification_link`, `expired_in`, `is_email_verified`, `email_verified_at`, `created_at`, `updated_at`, `request_type`, `partner_ref`) VALUES
+(1, 'Nur', 'Mohammad', 'Shopno', 1, 'nur.mohd1996@gmail.com', '8801985964113', 'House 16/6, Road 22, Block A', 'Dhaka', 'Dhaka', '1219', 'BD', '3452876954', '7b1897e677ace9a48f6c87e0d8713d35615c72ce', '2023-10-19 11:18:24', 1, '2023-10-18 05:18:58', '2023-10-18 05:18:24', '2023-10-18 05:18:58', 2, 3);
 
 -- --------------------------------------------------------
 
@@ -486,21 +692,23 @@ INSERT INTO `registrations` (`id`, `firstname`, `lastname`, `company`, `email`, 
 --
 
 CREATE TABLE `roles` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `id` int(11) UNSIGNED NOT NULL,
+  `name` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_active` tinyint(2) DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `roles`
 --
 
-INSERT INTO `roles` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
-(1, 'Super Admin', NULL, '2023-04-02 07:18:40', '2023-04-02 07:18:48'),
-(2, 'Admin', NULL, '2023-04-02 07:18:52', '2023-04-02 07:18:56'),
-(3, 'User', NULL, '2023-04-02 07:19:00', '2023-04-02 07:19:05');
+INSERT INTO `roles` (`id`, `name`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'Super Admin', NULL, 1, '2023-04-02 07:18:40', '2023-04-02 07:18:48'),
+(2, 'Admin', 'Admin', 1, '2023-04-02 07:18:52', '2023-09-03 05:25:13'),
+(3, 'Partner', NULL, 1, '2023-04-02 07:19:00', '2023-10-03 05:36:21'),
+(4, 'POS Account', 'POS Account', 1, '2023-09-03 21:35:45', '2023-09-04 03:35:55');
 
 -- --------------------------------------------------------
 
@@ -511,28 +719,75 @@ INSERT INTO `roles` (`id`, `name`, `description`, `created_at`, `updated_at`) VA
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
-  `firstname` varchar(50) NOT NULL,
-  `lastname` varchar(50) DEFAULT NULL,
-  `email` varchar(50) NOT NULL,
-  `mobile` varchar(25) NOT NULL,
-  `company` varchar(150) DEFAULT NULL,
-  `address` varchar(255) DEFAULT NULL,
+  `first_name` varchar(20) NOT NULL,
+  `last_name` varchar(20) DEFAULT NULL,
+  `company` varchar(100) DEFAULT NULL,
+  `company_type` int(11) DEFAULT NULL,
+  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mobile` varchar(20) NOT NULL,
+  `address` varchar(200) DEFAULT NULL,
   `state` varchar(50) DEFAULT NULL,
   `city` varchar(50) DEFAULT NULL,
-  `zipcode` varchar(30) DEFAULT NULL,
-  `country` varchar(120) DEFAULT NULL,
+  `zip_code` varchar(30) DEFAULT NULL,
+  `country` varchar(3) DEFAULT NULL,
   `role` int(11) NOT NULL,
   `nid` varchar(20) DEFAULT NULL,
   `password` varchar(120) NOT NULL,
-  `mobileverified` bit(1) NOT NULL DEFAULT b'0',
-  `emailverified` bit(1) NOT NULL DEFAULT b'0',
-  `nidverified` bit(1) NOT NULL DEFAULT b'0',
-  `isactive` bit(1) NOT NULL DEFAULT b'0',
-  `isauthorized` bit(1) NOT NULL DEFAULT b'0',
-  `createdon` datetime NOT NULL DEFAULT current_timestamp(),
-  `createdby` int(10) DEFAULT NULL,
-  `avatar` varchar(50) DEFAULT NULL
+  `is_mobile_verified` tinyint(2) NOT NULL DEFAULT 0,
+  `is_email_verified` tinyint(2) NOT NULL DEFAULT 0,
+  `is_nid_verified` tinyint(2) NOT NULL DEFAULT 0,
+  `is_active` tinyint(2) NOT NULL DEFAULT 0,
+  `is_authorized` tinyint(2) NOT NULL DEFAULT 0,
+  `avatar` varchar(50) DEFAULT NULL,
+  `is_completed` tinyint(2) NOT NULL DEFAULT 0,
+  `is_doc_rejected` tinyint(2) NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `created_by` int(10) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `partner_ref` int(11) DEFAULT NULL,
+  `registration_status` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `first_name`, `last_name`, `company`, `company_type`, `email`, `mobile`, `address`, `state`, `city`, `zip_code`, `country`, `role`, `nid`, `password`, `is_mobile_verified`, `is_email_verified`, `is_nid_verified`, `is_active`, `is_authorized`, `avatar`, `is_completed`, `is_doc_rejected`, `created_at`, `created_by`, `updated_at`, `partner_ref`, `registration_status`) VALUES
+(1, 'superadmin', 'Super', 'Admin', 'Aaqa technology', NULL, 'superadmin@gmail.com', '9876509432', 'malibag', 'dhaka', 'dhaka', '1217', 'BD', 1, NULL, '$2y$10$xZHVll4w6Woit4oTgX3es.kpJTnsxjsiNGNMLjMoajrsaY./nk2Se', 0, 1, 0, 1, 1, 'admin.jpg', 0, 0, '2023-08-24 16:01:47', NULL, '2023-09-04 04:35:30', NULL, NULL),
+(2, 'admin', 'Admin', '', 'Aaqa technology', NULL, 'admin@gmail.com', '9876509432', 'malibag', 'dhaka', 'dhaka', '1217', 'BD', 2, NULL, '$2y$10$xZHVll4w6Woit4oTgX3es.kpJTnsxjsiNGNMLjMoajrsaY./nk2Se', 0, 1, 0, 1, 1, 'admin.jpg', 0, 0, '2023-08-24 16:03:14', NULL, '2023-09-04 04:35:33', NULL, NULL),
+(3, 'aqa_partner', 'Aqa technology', 'IT Solutions', 'Aqa tech', NULL, 'support@aaqa.co', '9876509439', 'Malibag', 'dhaka', 'dhaka', '1217', 'BD', 3, '789346234', '$2y$10$/ILZ1u0v.kc7f2Hd7PqLYOUqigJpU38neeM05rtCGCCuXYzMs8Kma', 0, 1, 0, 1, 1, 'admin.jpg', 0, 0, '2023-09-17 06:02:37', NULL, '2023-09-27 09:00:59', NULL, NULL),
+(13, 'nur.mohd1996@gmail.com', 'Nur', 'Mohammad', 'Shopno', 1, 'nur.mohd1996@gmail.com', '8801985964113', 'House 16/6, Road 22, Block A', 'Dhaka', 'Dhaka', '1219', 'BD', 4, '3452876954', '$2y$10$f5PUJw41OaCdy9.UZNJZnOKPBzsLuTWkjAvebFKFh9EmHR9Ylos5y', 0, 1, 0, 1, 1, '122279.jpg', 1, 0, '2023-10-18 11:18:58', NULL, '2023-10-18 05:41:14', 3, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_packages`
+--
+
+CREATE TABLE `user_packages` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `registration_id` int(11) NOT NULL,
+  `package_id` int(11) NOT NULL,
+  `billing_period` int(11) NOT NULL,
+  `registration_amount` double DEFAULT NULL,
+  `is_extended_support` tinyint(2) NOT NULL DEFAULT 0,
+  `support_amount` double DEFAULT NULL,
+  `billing_amount` double DEFAULT NULL,
+  `activation_date` datetime DEFAULT NULL,
+  `is_active` tinyint(2) NOT NULL DEFAULT 0,
+  `created_on` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `user_packages`
+--
+
+INSERT INTO `user_packages` (`id`, `user_id`, `registration_id`, `package_id`, `billing_period`, `registration_amount`, `is_extended_support`, `support_amount`, `billing_amount`, `activation_date`, `is_active`, `created_on`) VALUES
+(1, 13, 1, 1, 1, 2000, 0, 0, 700, NULL, 0, '2023-10-01 08:58:24'),
+(3, 11, 3, 1, 1, 2000, 1, 1000, 1700, NULL, 0, '2023-10-04 10:30:22'),
+(4, 12, 4, 2, 1, 2000, 1, 1000, 2200, NULL, 0, '2023-10-09 10:08:27'),
+(5, 13, 1, 1, 1, 2000, 1, 1000, 1700, NULL, 0, '2023-10-18 05:18:24');
 
 -- --------------------------------------------------------
 
@@ -548,14 +803,6 @@ CREATE TABLE `user_work_groups` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `user_work_groups`
---
-
-INSERT INTO `user_work_groups` (`id`, `userid`, `workgroupid`, `issupervisor`, `created_at`, `updated_at`) VALUES
-(1, 2, 1, 1, '2023-05-16 05:30:50', '2023-05-16 05:43:15'),
-(4, 13, 2, 0, '2023-07-26 22:31:37', '2023-07-26 22:31:37');
 
 -- --------------------------------------------------------
 
@@ -577,18 +824,35 @@ CREATE TABLE `work_groups` (
 --
 
 INSERT INTO `work_groups` (`id`, `name`, `description`, `parent`, `created_at`, `updated_at`) VALUES
-(1, 'Currency', 'all currencies taken here', NULL, '2023-05-16 04:20:21', '2023-05-16 23:55:52'),
-(2, 'BDT', 'Bangladesi taka', 1, '2023-05-16 04:26:49', '2023-05-16 23:56:33'),
-(5, 'Dollar', 'US Dollar', 1, '2023-07-26 22:54:40', '2023-07-26 22:54:40');
+(1, 'Partner', NULL, NULL, '2023-10-03 05:28:51', '2023-10-03 05:28:51'),
+(2, 'POS Owner', NULL, NULL, '2023-10-03 05:29:09', '2023-10-03 05:29:09');
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `company_types`
+--
+ALTER TABLE `company_types`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `contents`
+--
+ALTER TABLE `contents`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `countries`
 --
 ALTER TABLE `countries`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `docs`
+--
+ALTER TABLE `docs`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -599,9 +863,9 @@ ALTER TABLE `failed_jobs`
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
 
 --
--- Indexes for table `look_ups`
+-- Indexes for table `lookups`
 --
-ALTER TABLE `look_ups`
+ALTER TABLE `lookups`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -617,10 +881,22 @@ ALTER TABLE `modules`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `packages`
+--
+ALTER TABLE `packages`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `password_resets`
 --
 ALTER TABLE `password_resets`
   ADD KEY `password_resets_email_index` (`email`);
+
+--
+-- Indexes for table `payment_history`
+--
+ALTER TABLE `payment_history`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `personal_access_tokens`
@@ -631,9 +907,15 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
--- Indexes for table `privilege`
+-- Indexes for table `pos_accounts_request`
 --
-ALTER TABLE `privilege`
+ALTER TABLE `pos_accounts_request`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `privileges`
+--
+ALTER TABLE `privileges`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -641,7 +923,9 @@ ALTER TABLE `privilege`
 --
 ALTER TABLE `registrations`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `registrations_email_unique` (`email`);
+  ADD UNIQUE KEY `registrations_email_unique` (`email`),
+  ADD UNIQUE KEY `registrations_mobile_unique` (`mobile`) USING BTREE,
+  ADD UNIQUE KEY `verification_link` (`verification_link`);
 
 --
 -- Indexes for table `roles`
@@ -653,6 +937,13 @@ ALTER TABLE `roles`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indexes for table `user_packages`
+--
+ALTER TABLE `user_packages`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -672,10 +963,28 @@ ALTER TABLE `work_groups`
 --
 
 --
+-- AUTO_INCREMENT for table `company_types`
+--
+ALTER TABLE `company_types`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `contents`
+--
+ALTER TABLE `contents`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `countries`
 --
 ALTER TABLE `countries`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=250;
+
+--
+-- AUTO_INCREMENT for table `docs`
+--
+ALTER TABLE `docs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -684,22 +993,34 @@ ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `look_ups`
+-- AUTO_INCREMENT for table `lookups`
 --
-ALTER TABLE `look_ups`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `lookups`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `modules`
 --
 ALTER TABLE `modules`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+
+--
+-- AUTO_INCREMENT for table `packages`
+--
+ALTER TABLE `packages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `payment_history`
+--
+ALTER TABLE `payment_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -708,10 +1029,16 @@ ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `privilege`
+-- AUTO_INCREMENT for table `pos_accounts_request`
 --
-ALTER TABLE `privilege`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `pos_accounts_request`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `privileges`
+--
+ALTER TABLE `privileges`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `registrations`
@@ -723,25 +1050,31 @@ ALTER TABLE `registrations`
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `user_packages`
+--
+ALTER TABLE `user_packages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user_work_groups`
 --
 ALTER TABLE `user_work_groups`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `work_groups`
 --
 ALTER TABLE `work_groups`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -6,9 +6,9 @@
 
 <!-- BOOTSTRAP JS -->
 <script src="{{ URL::asset('assets/plugins/bootstrap/js/popper.min.js') }}"></script>
-<script src="{{URL::asset('assets/js/jwt-decode.js')}}"></script>
 
-<script src="{{ URL::asset('assets/plugins/bootstrap/js/bootstrap.js') }}"></script>
+
+<script src="{{ URL::asset('assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
 
 <!-- SPARKLINE JS-->
 <script src="{{ URL::asset('assets/plugins/jquery-sparkline/jquery.sparkline.min.js') }}"></script>
@@ -41,6 +41,13 @@
 <script src="{{ asset('assets/plugins/datatable/jquery.dataTables.min.js') }}"></script>
 <!-- <script src="{{ asset('assets/plugins/datatable/dataTables.bootstrap4.min.js') }}"></script> -->
 
+<script src="{{URL::asset('assets/js/jwt-decode.js')}}"></script>
+<script src="{{ asset('assets/js/tokenField.js')}}"></script>
+<script src="{{ URL::asset('assets/plugins/summernote/summernote-bs4.js') }}"></script>
+<script src="{{ URL::asset('assets/js/summernote.js') }}"></script>
+{{--<script src="{{ URL::asset('assets/plugins/fileuploads/js/fileupload.js') }}"></script>--}}
+{{--<script src="{{ URL::asset('assets/plugins/fileuploads/js/file-upload.js') }}"></script>--}}
+
 @yield('js')
 
 <!--CUSTOM JS -->
@@ -48,6 +55,16 @@
 
 <!-- Color Change JS -->
 <script src="{{URL::asset('assets/js/color-change.js')}}"></script>
+
+{{--<script src="{{ URL::asset('assets/js/index3.js') }}"></script>--}}
+{{--<script src="{{ URL::asset('assets/plugins/chart/Chart.bundle.js') }}"></script>--}}
+{{--<script src="{{ URL::asset('assets/plugins/chart/utils.js') }}"></script>--}}
+{{--<script src="{{ URL::asset('assets/plugins/echarts/echarts.js') }}"></script>--}}
+{{--<script src="{{ URL::asset('assets/plugins/apexcharts/apexcharts.js') }}"></script>--}}
+{{--<script src="{{ URL::asset('assets/plugins/peitychart/jquery.peity.min.js') }}"></script>--}}
+{{--<script src="{{ URL::asset('assets/plugins/peitychart/peitychart.init.js') }}"></script>--}}
+{{--<script src="{{ URL::asset('assets/js/index1.js') }}"></script>--}}
+
 
 
 

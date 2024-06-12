@@ -24,6 +24,6 @@ class Registration extends Authenticatable implements JWTSubject
     }
 
     protected $fillable = [
-        'first_name','last_name','company','email','mobile','address','state','city','zip_code','country','nid','verification_link','is_email_verified','email_verified_at','created_at','updated_at'
+        'first_name','last_name','company','company_type','email','mobile','address','state','city','zip_code','country','nid','verification_link','expired_in','is_email_verified','email_verified_at','request_type','partner_ref','created_at','updated_at'
     ];
 }

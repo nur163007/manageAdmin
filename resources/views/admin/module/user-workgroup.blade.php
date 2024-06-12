@@ -1,8 +1,8 @@
 @extends('admin.main')
 @section('title','user workgroup')
 @section('css')
-    <link href="{{ URL::asset('assets/plugins/morris/morris.css')}}" rel="stylesheet">
-    <link href="{{ URL::asset('assets/plugins/rating/rating.css')}}" rel="stylesheet">
+{{--    <link href="{{ URL::asset('assets/plugins/morris/morris.css')}}" rel="stylesheet">--}}
+{{--    <link href="{{ URL::asset('assets/plugins/rating/rating.css')}}" rel="stylesheet">--}}
 @endsection
 @section('page-header')
     <!-- PAGE-HEADER -->
@@ -24,7 +24,7 @@
                         <h3 class="card-title">All User Workgroup</h3>
                     </div>
                     <div class="col-lg-6 text-right">
-                        <button class="btn btn-info"  data-target="#userWorkgroupForm" data-toggle="modal" data-original-title="Add New user workgroup" onclick="ResetForm();">
+                        <button class="btn btn-info"  data-target="#userWorkgroupForm" data-toggle="modal" data-original-title="Add New user workgroup" onclick="ResetUserWorkForm();">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             <span class="hidden-xs">Add New User workgroup</span>
                         </button>
@@ -60,7 +60,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">User workgroup Form</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="ResetForm();">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="ResetUserWorkForm();">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
@@ -98,7 +98,7 @@
                                     <label class="wc-error pull-left" id="form_error"></label>
                                     <input type="submit" name="submit" value="Submit" class="btn btn-primary mr-3" id="btnUserWorkgroupForm">
                                     {{--                                        <button type="button" class="btn btn-primary mr-3" id="btnUserFormSubmit" >Submit</button>--}}
-                                    <button type="button" class="btn btn-default btn-outline" data-dismiss="modal" aria-label="Close" onclick="ResetForm();">Close</button>
+                                    <button type="button" class="btn btn-default btn-outline" data-dismiss="modal" aria-label="Close" onclick="ResetUserWorkForm();">Close</button>
                                 </div>
                             </div>
                         </form>
@@ -114,8 +114,9 @@
 
     <script type="text/javascript">
 
-        function ResetForm() {
+        function ResetUserWorkForm() {
             $('#form-user-workgroup')[0].reset();
+            $("#hiddenUsergroupId").val(0);
         }
 
         $(document).ready(function () {
@@ -144,6 +145,38 @@
                 ],
             });
 
+            //    user workgroup submit
+
+            $('#form-user-workgroup').on("submit",function(event){
+                event.preventDefault();
+                var form = $(this).serialize();
+                $.ajax({
+                    url:"{{route('add.user.workgroup')}}",
+                    data:form,
+                    type:"POST",
+                    success:function(response){
+
+                        if (response.success == true){
+                            $("#form-user-workgroup")[0].reset();
+                            $('#userWorkgroupForm').modal('hide');
+                            Toast.fire({
+                                type:'success',
+                                title:response.msg,
+                            });
+                            $('#user-workgroup-table').DataTable().ajax.reload();
+                            ResetUserWorkForm();
+                        }
+                    },
+                    error:function(error){
+                        Toast.fire({
+                            type:'error',
+                            title:'Something Error Found, Please try again.',
+                        });
+                    }
+                });
+            });
+
+
         });
 
 
@@ -156,7 +189,7 @@
                 var html = '<option value=""> choose a user</option>';
                 if (response.length >0){
                     for (let i=0;i<response.length; i++){
-                        html +='<option value="'+response[i]['id']+'">'+response[i]['firstname']+'</option>';
+                        html +='<option value="'+response[i]['id']+'">'+response[i]['first_name']+'</option>';
                     }
                 }
 
@@ -183,36 +216,6 @@
 
         });
 
-
-        //    user workgroup submit
-
-        $('#form-user-workgroup').on("submit",function(event){
-            event.preventDefault();
-            var form = $(this).serialize();
-            $.ajax({
-                url:"{{route('add.user.workgroup')}}",
-                data:form,
-                type:"POST",
-                success:function(response){
-
-                    if (response.success == true){
-                        $("#form-user-workgroup")[0].reset();
-                        $('#userWorkgroupForm').modal('hide');
-                        Toast.fire({
-                            type:'success',
-                            title:response.msg,
-                        });
-                        $('#user-workgroup-table').DataTable().ajax.reload();
-                    }
-                },
-                error:function(error){
-                    Toast.fire({
-                        type:'error',
-                        title:'Something Error Found, Please try again.',
-                    });
-                }
-            });
-        });
 
         // edit option
         function getEditUserWorkgroup(id) {
@@ -266,16 +269,5 @@
         }
 
     </script>
-
-    <script src="{{ URL::asset('assets/js/index3.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/chart/Chart.bundle.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/chart/utils.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/morris/raphael-min.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/morris/morris.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/peitychart/jquery.peity.min.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/peitychart/peitychart.init.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/rating/jquery.barrating.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/rating/ratings.js') }}"></script>
-
 
 @endsection

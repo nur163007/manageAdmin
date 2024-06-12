@@ -1,8 +1,8 @@
 @extends('admin.main')
 @section('title','lookup')
 @section('css')
-    <link href="{{ URL::asset('assets/plugins/morris/morris.css')}}" rel="stylesheet">
-    <link href="{{ URL::asset('assets/plugins/rating/rating.css')}}" rel="stylesheet">
+{{--    <link href="{{ URL::asset('assets/plugins/morris/morris.css')}}" rel="stylesheet">--}}
+{{--    <link href="{{ URL::asset('assets/plugins/rating/rating.css')}}" rel="stylesheet">--}}
 @endsection
 @section('page-header')
     <!-- PAGE-HEADER -->
@@ -24,7 +24,7 @@
                         <h3 class="card-title">All Lookup</h3>
                     </div>
                     <div class="col-lg-6 text-right">
-                        <button class="btn btn-info"  data-target="#lookupForm" data-toggle="modal" data-original-title="Add New lookup" onclick="ResetForm();">
+                        <button class="btn btn-info"  data-target="#lookupForm" data-toggle="modal" data-original-title="Add New lookup" onclick="ResetLookupForm();">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             <span class="hidden-xs">Add New Lookup</span>
                         </button>
@@ -59,7 +59,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">Lookup Form</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="ResetForm();">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="ResetLookupForm();">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
@@ -92,7 +92,7 @@
                                     <label class="wc-error pull-left" id="form_error"></label>
                                     <input type="submit" name="submit" value="Submit" class="btn btn-primary mr-3" id="btnLookupForm">
                                     {{--                                        <button type="button" class="btn btn-primary mr-3" id="btnUserFormSubmit" >Submit</button>--}}
-                                    <button type="button" class="btn btn-default btn-outline" data-dismiss="modal" aria-label="Close" onclick="ResetForm();">Close</button>
+                                    <button type="button" class="btn btn-default btn-outline" data-dismiss="modal" aria-label="Close" onclick="ResetLookupForm();">Close</button>
                                 </div>
                             </div>
                         </form>
@@ -108,8 +108,9 @@
 
     <script type="text/javascript">
 
-        function ResetForm() {
+        function ResetLookupForm() {
             $('#form-lookup')[0].reset();
+            $("#hiddenLookupId").val(0);
         }
 
         $(document).ready(function () {
@@ -129,56 +130,62 @@
                 ],
             });
 
+            //get lookup parent function
+
+            getLookupParent();
+
+            //    navigation submit
+
+            $('#form-lookup').on("submit",function(event){
+                event.preventDefault();
+                var form = $(this).serialize();
+                $.ajax({
+                    url:"{{route('add.lookup')}}",
+                    data:form,
+                    type:"POST",
+                    success:function(response){
+
+                        if (response.success == true){
+                            $("#form-lookup")[0].reset();
+                            $('#lookupForm').modal('hide');
+                            Toast.fire({
+                                type:'success',
+                                title:response.msg,
+                            });
+                            $('#lookup-table').DataTable().ajax.reload();
+                            ResetLookupForm();
+                            getLookupParent();
+                        }
+                    },
+                    error:function(error){
+                        Toast.fire({
+                            type:'error',
+                            title:'Something Error Found, Please try again.',
+                        });
+                    }
+                });
+            });
         });
 
         // PARENT NAV ROUTE
-        $.ajax({
-            url: "{{ route('lookup.parent') }}",
-            type: "GET",
-            success: function (response) {
-                // console.log(response)
-                var html = '<option value=""> choose a parent</option>';
-                if (response.length >0){
-                    for (let i=0;i<response.length; i++){
-                        html +='<option value="'+response[i]['id']+'">'+response[i]['name']+'</option>';
-                    }
-                }
-
-                $("#lookupparent").html(html);
-            }
-
-        });
-
-
-        //    navigation submit
-
-        $('#form-lookup').on("submit",function(event){
-            event.preventDefault();
-            var form = $(this).serialize();
+        function getLookupParent() {
             $.ajax({
-                url:"{{route('add.lookup')}}",
-                data:form,
-                type:"POST",
-                success:function(response){
-
-                    if (response.success == true){
-                        $("#form-lookup")[0].reset();
-                        $('#lookupForm').modal('hide');
-                        Toast.fire({
-                            type:'success',
-                            title:response.msg,
-                        });
-                        $('#lookup-table').DataTable().ajax.reload();
+                url: "{{ route('lookup.parent') }}",
+                type: "GET",
+                success: function (response) {
+                    // console.log(response)
+                    var html = '<option value=""> choose a parent</option>';
+                    if (response.length > 0) {
+                        for (let i = 0; i < response.length; i++) {
+                            html += '<option value="' + response[i]['id'] + '">' + response[i]['name'] + '</option>';
+                        }
                     }
-                },
-                error:function(error){
-                    Toast.fire({
-                        type:'error',
-                        title:'Something Error Found, Please try again.',
-                    });
+
+                    $("#lookupparent").html(html);
                 }
+
             });
-        });
+        }
 
         // edit option
         function getEditLookup(id) {
@@ -212,6 +219,8 @@
                                 title:response.msg,
                             });
                             $('#lookup-table').DataTable().ajax.reload();
+                            ResetLookupForm();
+                            getLookupParent();
                         }
 
                     },
@@ -228,16 +237,5 @@
         }
 
     </script>
-
-    <script src="{{ URL::asset('assets/js/index3.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/chart/Chart.bundle.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/chart/utils.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/morris/raphael-min.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/morris/morris.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/peitychart/jquery.peity.min.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/peitychart/peitychart.init.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/rating/jquery.barrating.js') }}"></script>
-    <script src="{{ URL::asset('assets/plugins/rating/ratings.js') }}"></script>
-
 
 @endsection

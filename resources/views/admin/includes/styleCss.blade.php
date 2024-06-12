@@ -7,7 +7,7 @@
 <title>@yield('title')</title>
 
 <!-- BOOTSTRAP CSS -->
-<link href="{{URL::asset('assets/plugins/bootstrap/css/bootstrap.css')}}" rel="stylesheet" />
+<link href="{{URL::asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" />
 
 <!-- STYLE CSS -->
 <link href="{{URL::asset('assets/css/style.css')}}" rel="stylesheet"/>
@@ -23,15 +23,6 @@
 <!--- FONT-ICONS CSS -->
 <link href="{{URL::asset('assets/plugins/icons/icons.css')}}" rel="stylesheet"/>
 
-<!-- sweetalert 2 -->
-<link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.css') }}">
-
-<!-- DataTables -->
-{{--<link rel="stylesheet" href="{{ asset('assets/plugins/datatable/dataTables.bootstrap4.min.css') }}">--}}
-<link rel="stylesheet" href="{{ asset('assets/plugins/datatable/dataTables.min.css') }}">
-
-@yield('css')
-
 <!-- SIDE-MENU CSS -->
 <link href="{{URL::asset('assets/css/sidemenu.css')}}" rel="stylesheet"/>
 
@@ -41,5 +32,21 @@
 <!-- COLOR SKIN CSS -->
 <link id="theme" rel="stylesheet" type="text/css" media="all" href="{{URL::asset('assets/colors/color1.css')}}" />
 
+<!-- sweetalert 2 -->
+<link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.css') }}">
+
+<!-- DataTables -->
+{{--<link rel="stylesheet" href="{{ asset('assets/plugins/datatable/dataTables.bootstrap4.min.css') }}">--}}
+<link rel="stylesheet" href="{{ asset('assets/plugins/datatable/dataTables.min.css') }}">
+<link rel="stylesheet" href="{{asset('assets/css/tokenField.css')}}">
+<link href="{{ URL::asset('assets/plugins/summernote/summernote-bs4.css')}}" rel="stylesheet">
+{{--<link href="{{ URL::asset('assets/plugins/fileuploads/css/fileupload.css')}}" rel="stylesheet">--}}
+
+@yield('css')
+
+
+
+
 <!-- NID SHOW CSS -->
 <link rel="stylesheet" href="{{URL::asset('assets/css/nid-style.css')}}">
+<link rel="stylesheet" href="{{URL::asset('assets/css/footer.css')}}">
